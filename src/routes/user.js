@@ -9,12 +9,7 @@ export default [
 				component: () => import("@/views/user/account/Signin.vue"),
 				meta: { isAccount: false },
 			},
-			{
-				path: "/signup",
-				name: "signup",
-				component: () => import("@/views/user/account/Signup.vue"),
-				meta: { isAccount: false },
-			},
+
 			{
 				path: "/signup/approval",
 				name: "signupAppro",

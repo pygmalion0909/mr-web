@@ -31,13 +31,13 @@
 		</transition>
 
 		<!-- img -->
-		<div class="header_img"></div>
+		<div class="header_img-div">
+			<img class="header_img" src="@/assets/images/header-img.png" alt="" />
+		</div>
 
 		<!-- logo -->
 		<div class="header_logo">
-			<div class="header_logo_icon">
-				<router-link class="header_logo_link" :to="{ name: 'home' }"></router-link>
-			</div>
+			<router-link class="header_logo_link" :to="{ name: 'home' }"></router-link>
 		</div>
 	</div>
 </template>

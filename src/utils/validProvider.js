@@ -28,7 +28,7 @@ extend("confirmed", {
 });
 extend("required", {
 	...required,
-	message: "필수항목",
+	message: "필수항목 입니다.",
 });
 extend("min", {
 	...min,

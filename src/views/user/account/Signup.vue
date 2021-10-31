@@ -1,85 +1,130 @@
 <template>
 	<div class="signup">
-		<div class="signup__title-div">
-			<h2 class="signup__title text-indigo-500 text-5xl mb-8">Let's</h2>
-			<h2 class="signup__title text-indigo-500 text-5xl mb-8">SignUp</h2>
-		</div>
-		<validObserver ref="validObserver">
-			<ul class="signup__ul">
-				<li class="signup__li signup__li--role">
-					<valid rules="required" v-slot="{ errors }">
-						<label class="select-none container relative cursor-pointer pl-7 mr-6">
+		<div class="signup_contents">
+			<!-- header -->
+			<div class="signup_header">
+				<router-link to="/" class="signup_header_link-logo">
+					<img src="@/assets/icons/logo1.svg" alt="" />
+				</router-link>
+			</div>
+
+			<!-- body -->
+			<validObserver ref="validObserver">
+				<ul class="signup_body_ul">
+					<!-- id -->
+					<li class="signup_body_li">
+						<valid rules="required" v-slot="{ errors }">
+							<p class="signup_title">아이디</p>
+							<input class="signup_input" type="text" v-model="loginId" placeholder="📌 아이디를 입력해주세요." />
+							<p class="signup_error">{{ errors[0] }}</p>
+						</valid>
+					</li>
+
+					<!-- nick-name -->
+					<li class="signup_body_li">
+						<valid rules="required" v-slot="{ errors }">
+							<p class="signup_title">닉네임</p>
+							<input class="signup_input" type="text" v-model="nickName" placeholder="📌 닉네임을 입력해주세요." />
+							<p class="signup_error">{{ errors[0] }}</p>
+						</valid>
+					</li>
+
+					<!-- email -->
+					<li class="signup_body_li">
+						<valid rules="email|required" v-slot="{ errors }">
+							<p class="signup_title">이메일</p>
+							<input class="signup_input" type="text" v-model="email" placeholder="📌 이메일을 입력해주세요." />
+							<p class="signup_error">{{ errors[0] }}</p>
+						</valid>
+					</li>
+
+					<!-- password -->
+					<li class="signup_body_li">
+						<valid rules="required|min:10|confirmed:confirmation" v-slot="{ errors }">
+							<p class="signup_title">비밀번호</p>
 							<input
-								class="absolute opacity-0 left-0 top-0 cursor-pointer"
-								type="radio"
-								name="role"
-								value="USE"
-								v-model="role"
+								class="signup_input signup_input--passwd"
+								type="password"
+								v-model="password"
+								placeholder="📌 비밀번호(10자리 이상)를 입력해주세요."
 							/>
-							<span class="h-6 w-6 checkmark absolute top-0 left-0 bg-white border border-indigo-200 rounded"></span>
-							<span class="align-top text-xl">회원</span>
-						</label>
-						<label class="select-none container relative cursor-pointer pl-7 mr-6">
+							<p class="signup_error">{{ errors[0] }}</p>
+						</valid>
+						<valid vid="confirmation" v-slot="{ errors }">
 							<input
-								class="absolute opacity-0 left-0 top-0 cursor-pointer"
-								type="radio"
-								name="role"
-								value="STO"
-								v-model="role"
+								class="signup_input"
+								type="password"
+								v-model="rePassword"
+								placeholder="비밀번호를 한번더 입력해주세요."
 							/>
-							<span class="h-6 w-6 checkmark absolute top-0 left-0 bg-white border border-indigo-200 rounded"></span>
-							<span class="align-top text-xl">사업주</span>
-						</label>
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-				<li class="signup__li">
-					<valid rules="required" v-slot="{ errors }">
-						<input class="signup__text" type="text" v-model="loginId" placeholder="📌 로그인ID" />
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-				<li class="signup__li">
-					<valid rules="required" v-slot="{ errors }">
-						<input class="signup__text" type="text" v-model="nickName" placeholder="📌 닉네임" />
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-				<li class="signup__li">
-					<valid rules="email|required" v-slot="{ errors }">
-						<input class="signup__text" type="text" v-model="email" placeholder="📌 이메일" />
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-				<li class="signup__li">
-					<valid rules="required|min:10|confirmed:confirmation" v-slot="{ errors }">
-						<input class="signup__text" type="password" v-model="password" placeholder="📌 비밀번호" />
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-				<li class="signup__li">
-					<valid vid="confirmation" v-slot="{ errors }">
-						<input class="signup__text" type="password" v-model="rePassword" placeholder="비밀번호 확인" />
-						<p class="signup__valid-error">{{ errors[0] }}</p>
-					</valid>
-				</li>
-			</ul>
-		</validObserver>
-		<div class="signup__btn-div">
-			<button class="signup__btn signup__btn--signup hover:bg-red-500" @click="signup">가입</button>
-			<button class="signup__btn signup__btn--cancel" @click="cancel">취소</button>
+							<p class="signup_error">{{ errors[0] }}</p>
+						</valid>
+					</li>
+
+					<!-- agreements -->
+					<li class="signup_body_li">
+						<p class="signup_title">서비스약관에 동의해주세요</p>
+						<ul class="signup_agree_ul">
+							<li class="signup_agree_li signup_agree_li--all">
+								<button class="signup_agree_btn signup_agree_btn--all">
+									<!-- TODO signup_agree_icon--ok동적바인딩 -->
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									모두 동의합니다.
+								</button>
+							</li>
+							<li class="signup_agree_li">
+								<button class="signup_agree_btn">
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									만 14세 이상입니다.<span class="signup_agree_must"> (필수)</span>
+								</button>
+							</li>
+							<li class="signup_agree_li">
+								<button class="signup_agree_btn">
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									<router-link to="/" class="signup_agree_link">서비스 이용약관</router-link>에 동의합니다.
+									<span class="signup_agree_must"> (필수)</span>
+								</button>
+							</li>
+							<li class="signup_agree_li">
+								<button class="signup_agree_btn">
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									<router-link to="/" class="signup_agree_link">개인정보 수집/이용</router-link>에 동의합니다.
+									<span class="signup_agree_must"> (필수)</span>
+								</button>
+							</li>
+							<li class="signup_agree_li">
+								<button class="signup_agree_btn">
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									이벤트 할인 혜택 알림 수신에 동의합니다.<span> (선택)</span>
+								</button>
+							</li>
+							<li class="signup_agree_li">
+								<button class="signup_agree_btn">
+									<i class="fas fa-check-circle signup_agree_icon"></i>
+									장기 미접속 시 계정 활성 상태 유지합니다.<span> (선택)</span>
+								</button>
+							</li>
+						</ul>
+					</li>
+
+					<!-- btn -->
+					<!-- TODO signup_btn-signup--ok동적바인딩 -->
+					<li class="signup_body_li">
+						<button class="signup_btn-signup" @click="signup">가입완료</button>
+					</li>
+				</ul>
+			</validObserver>
+			<p class="signup_footer">© 2021 By Superpil-김경필. ALL RIGHTS RESERVED.</p>
 		</div>
 	</div>
 </template>
 
 <script>
 import { apiSignup } from "@/api/user/user";
-import { ROLE } from "@/utils/const";
 
 export default {
 	data() {
 		return {
-			role: ROLE.use,
 			loginId: "",
 			nickName: "",
 			password: "",
@@ -94,7 +139,6 @@ export default {
 				// check valid
 				if (!(await this.$refs.validObserver.validate())) return alert("가입 필수항목(📌)을 작성해주세요.🙏");
 				const payload = {
-					role: this.role,
 					loginId: this.loginId,
 					nickName: this.nickName,
 					email: this.email,
@@ -119,7 +163,6 @@ export default {
 			}
 		},
 		init() {
-			this.role = ROLE.use;
 			this.loginId = "";
 			this.nickName = "";
 			this.password = "";
@@ -133,35 +176,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped>
-/* checkbox */
-.container:hover input ~ .checkmark {
-	background-color: #6365f142;
-}
-.container input:checked ~ .checkmark {
-	background-color: #6366f1;
-}
-.container input:checked ~ span {
-	color: #6366f1;
-}
-.checkmark:after {
-	content: "";
-	position: absolute;
-	display: none;
-}
-.container input:checked ~ .checkmark:after {
-	display: block;
-}
-.container .checkmark:after {
-	left: 5px;
-	top: 2px;
-	width: 5px;
-	height: 10px;
-	border: solid white;
-	border-width: 0 3px 3px 0;
-	-webkit-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	transform: rotate(45deg);
-}
-</style>

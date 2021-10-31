@@ -26,6 +26,14 @@ const router = new VueRouter({
 				...user,
 			],
 		},
+		// single page
+		{
+			path: "/signup",
+			name: "signup",
+			component: () => import("@/views/user/account/Signup.vue"),
+			meta: { isAccount: false },
+		},
+		// ceo페이지
 		// {
 		// 	path: "/ceo",
 		// 	component: () => import("@/views/ceoLayout/CeoFrame.vue"),
