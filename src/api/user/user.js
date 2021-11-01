@@ -1,17 +1,19 @@
 import axiosApi from "@/api/user/index";
 
+const baseURL = "/auths";
+
 export function apiSignup(payload) {
-	return axiosApi.post(`/users`, payload);
+	return axiosApi.post(`${baseURL}`, payload);
 }
 export function apiUpdateUser(payload) {
-	return axiosApi.put(`/users`, payload);
+	return axiosApi.put(`${baseURL}`, payload);
 }
 export function apiSignin(payload) {
-	return axiosApi.post(`/users/signin`, payload);
+	return axiosApi.post(`${baseURL}/signin`, payload);
 }
 export function apiSearchLoginId(payload) {
-	return axiosApi.post(`/users/search/loginId`, payload);
+	return axiosApi.get(`${baseURL}/search/login-id?email=${payload.email}`);
 }
-export function apiSearchPassword(payload) {
-	return axiosApi.post(`/users/search/password`, payload);
+export function apiSearchPasswd(payload) {
+	return axiosApi.put(`${baseURL}/search/passwd`, payload);
 }

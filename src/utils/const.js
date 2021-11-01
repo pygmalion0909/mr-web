@@ -1,11 +1,3 @@
-export const ACCOUNT_TARGET = {
-	signup: "SIGNUP",
-	signin: "SIGNIN",
-	appro: "SIGNUPAPPRO",
-	login: "LOGINID",
-	pass: "PASSWORD",
-};
-
 export const ROLE = {
 	use: "USE",
 	sto: "STO",
@@ -14,7 +6,7 @@ export const ROLE = {
 };
 
 export const LOCAL_S = {
-	ac: "ACCOUNTINFO",
+	TK: "TOKEN",
 };
 
 export const COMMON_C = {
@@ -75,4 +67,10 @@ export const NOTICE_TITLE = {
 	NOTI: "NOTI",
 	DONE: "DONE",
 	WAR: "WAR",
+};
+
+export const ERR_CD = {
+	NOT_FOUND: "0-04",
+	FAIL_MAIL: "0-05",
+	VALID: "0-03",
 };

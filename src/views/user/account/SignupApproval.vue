@@ -18,6 +18,7 @@
 				</li>
 				<li>
 					<button class="signup__btn signup__btn--signup hover:bg-red-500" @click="signupArro">승인요청</button>
+					<button class="signup__btn signup__btn--signup hover:bg-red-500" @click="signupArro">인증키 재요청</button>
 				</li>
 			</ul>
 		</validObserver>
@@ -26,7 +27,6 @@
 
 <script>
 import { apiUpdateUser } from "@/api/user/user";
-import { ACCOUNT_TARGET } from "@/utils/const";
 
 export default {
 	data() {
@@ -36,8 +36,9 @@ export default {
 		};
 	},
 	created() {
-		if (!this.$route.query.loginId || !this.$route.query.loginId.trim()) return this.$router.push({ name: "home" });
-		this.loginId = this.$route.query.loginId;
+		this.$log.info("this.$route", this.$route);
+		// if (!this.$route.query.loginId || !this.$route.query.loginId.trim()) return this.$router.push({ name: "home" });
+		// this.loginId = this.$route.query.loginId;
 	},
 	methods: {
 		async signupArro() {
@@ -45,7 +46,6 @@ export default {
 				// check valid
 				if (!(await this.$refs.validObserver.validate())) return alert("가입승인 코드를 입력하세요.");
 				const payload = {
-					target: ACCOUNT_TARGET.signup,
 					loginId: this.loginId,
 					authKey: this.authKey,
 				};

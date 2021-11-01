@@ -4,7 +4,7 @@
 			<img src="@/assets/images/account-cover.jpg" alt="" />
 		</div>
 		<div class="account_right">
-			<div class="account-title">로그인</div>
+			<div class="account-title">{{ title }}</div>
 			<router-view></router-view>
 		</div>
 	</div>
@@ -14,12 +14,20 @@
 export default {
 	data() {
 		return {
-			page: this.$route.name,
+			title: "",
 		};
+	},
+	created() {
+		this.setTitle();
+	},
+	methods: {
+		setTitle() {
+			this.$route.name === "signin" ? (this.title = "로그인") : (this.title = "계정정보 찾기");
+		},
 	},
 	watch: {
 		$route(to, form) {
-			if (to.query !== form.query) this.page = this.$route.query.page;
+			if (to.name !== form.name) this.setTitle();
 		},
 	},
 };

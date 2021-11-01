@@ -42,10 +42,7 @@
 		<div class="border-gray-400 border-t border-b mt-3 mb-24 py-2 grid grid-cols-10 gap-1">
 			<span class="bg-red-500 col-span-1 inline-block w-9 h-9 rounded-full justify-self-center"></span>
 			<textarea class="bg-gray-50 col-span-7 w-full h-7 align-bottom" type="text" placeholder="사장님에게 문의하기" />
-			<button
-				class="bg-indigo-500 text-white col-span-2 w-full h-full max-h-10 rounded-md hover:bg-indigo-600"
-				@click="nextVer"
-			>
+			<button class="bg-indigo-500 text-white col-span-2 w-full h-full max-h-10 rounded-md hover:bg-indigo-600">
 				문의하기
 			</button>
 		</div>
@@ -57,7 +54,6 @@
 
 <script>
 import Dropdown from "@/components/user/Dropdown";
-import { alertNext } from "@/utils/nextV";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { apiGetCommonCdList } from "@/api/user/common";
 import { COMMON_C } from "@/utils/const";
@@ -172,9 +168,6 @@ export default {
 		// },
 		selectTab(objVal) {
 			this.tabContents = objVal.cd;
-		},
-		nextVer() {
-			alertNext("2.0");
 		},
 	},
 };

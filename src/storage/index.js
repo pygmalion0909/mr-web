@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 const storage = new Vuex.Store({
 	state: {
-		accountInfo: JSON.parse(localStorage.getItem(LOCAL_S.ac)) || null,
+		token: JSON.parse(localStorage.getItem(LOCAL_S.TK)) || "",
 		isSpinner: false,
 		notice: {
 			isOn: false,
@@ -18,14 +18,14 @@ const storage = new Vuex.Store({
 	},
 	mutations: {
 		// signin
-		setAccountInfo(state, payload) {
-			localStorage.setItem(LOCAL_S.ac, JSON.stringify(payload));
-			state.accountInfo = payload;
+		setToken(state, token) {
+			localStorage.setItem(LOCAL_S.TK, JSON.stringify(token));
+			state.token = token;
 		},
 		// logout
 		removeAccountInfo(state) {
-			localStorage.removeItem(LOCAL_S.ac);
-			state.accountInfo = null;
+			localStorage.removeItem(LOCAL_S.TK);
+			state.token = "";
 		},
 		// spinner
 		onSpinner(state) {

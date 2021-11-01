@@ -31,7 +31,13 @@ const router = new VueRouter({
 			path: "/signup",
 			name: "signup",
 			component: () => import("@/views/user/account/Signup.vue"),
-			meta: { isAccount: false },
+			meta: { isSignin: false },
+		},
+		{
+			path: "/signup/approval",
+			name: "signupAppro",
+			component: () => import("@/views/user/account/SignupApproval.vue"),
+			meta: { isSignin: false },
 		},
 		// ceo페이지
 		// {
@@ -47,8 +53,8 @@ const router = new VueRouter({
  * @NOTICE 전역 라우터
  */
 router.beforeEach((to, from, next) => {
-	// 로그인 상태일 경우 접근 불가
-	if (to.meta.isAccount === false && storage.state.accountInfo) {
+	// 로그인 상태일 경우 반드시 접근 불가
+	if (!to.meta.isSignin && storage.state.token) {
 		alert("이미 접속중 입니다.");
 		next({ name: "home" });
 	}

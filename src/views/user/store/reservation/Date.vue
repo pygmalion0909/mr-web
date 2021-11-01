@@ -4,10 +4,7 @@
 			<li class="text-indigo-500 store-rv__tab w-1/2 h-10 leading-10 text-center tracking-widest :hover cursor-pointer">
 				예약
 			</li>
-			<li
-				class="text-gray-400 w-1/2 h-10 leading-10 text-center tracking-widest :hover cursor-pointer"
-				@click="nextVer"
-			>
+			<li class="text-gray-400 w-1/2 h-10 leading-10 text-center tracking-widest :hover cursor-pointer">
 				포장/주문
 			</li>
 		</ul>
@@ -22,7 +19,6 @@
 
 <script>
 import Calendar from "@/components/user/Calendar";
-import { alertNext } from "@/utils/nextV";
 
 export default {
 	components: {
@@ -33,11 +29,7 @@ export default {
 			storeId: this.$route.params.storeId,
 		};
 	},
-	methods: {
-		nextVer() {
-			alertNext("2.0");
-		},
-	},
+	methods: {},
 };
 </script>
 

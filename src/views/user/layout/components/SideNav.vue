@@ -30,11 +30,11 @@
 
 			<!-- footer -->
 			<ul class="header_side_nav_footer">
-				<li class="header_side_nav_footer-li">
-					<router-link to="/" class="header_side_nav_footer-link">로그인</router-link>
+				<li class="header_side_nav_footer-li" @click="cancelSideNav">
+					<router-link :to="{ name: 'signin' }" class="header_side_nav_footer-link">로그인</router-link>
 				</li>
-				<li class="header_side_nav_footer-li">
-					<router-link to="/" class="header_side_nav_footer-link">회원가입</router-link>
+				<li class="header_side_nav_footer-li" @click="cancelSideNav">
+					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link">회원가입</router-link>
 				</li>
 			</ul>
 		</div>
