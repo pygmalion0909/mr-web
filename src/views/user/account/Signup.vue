@@ -40,7 +40,7 @@
 
 					<!-- password -->
 					<li class="signup_body_li">
-						<valid rules="required|min:10|confirmed:confirmation" v-slot="{ errors }">
+						<valid rules="required|passwdPattern|confirmed:confirmation" v-slot="{ errors }">
 							<p class="signup_title">비밀번호</p>
 							<input
 								class="signup_input signup_input--passwd"

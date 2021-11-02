@@ -1,3 +1,5 @@
+import storage from "@/storage";
+
 export function setInterceptors(instance) {
 	// 요청 인터셉터
 	instance.interceptors.request.use(
@@ -28,6 +30,7 @@ export function setInterceptors(instance) {
 			 * 응답 에러 직전 호출됩니다.
 			 * .catch() 으로 이어집니다.
 			 */
+			storage.commit("offSpinner");
 			return Promise.reject(error);
 		},
 	);

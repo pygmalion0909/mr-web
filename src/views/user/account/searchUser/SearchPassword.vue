@@ -20,11 +20,11 @@
 			<!-- update -->
 			<ul class="signup__ul" v-if="isUpdate">
 				<li class="account_li search-passwd_li">
-					<valid rules="required|min:10|confirmed:confirmation" v-slot="{ errors }">
+					<valid rules="required|passwdPattern|confirmed:confirmation" v-slot="{ errors }">
 						<input
 							class="account_input"
 							type="password"
-							v-model="password"
+							v-model="passwd"
 							placeholder="📌 새로운 비밀번호를 입력해주세요."
 						/>
 						<p class="account_error">{{ errors[0] }}</p>
@@ -33,7 +33,7 @@
 						<input
 							class="account_input"
 							type="password"
-							v-model="rePassword"
+							v-model="rePasswd"
 							placeholder="비밀번호 동일하게 입력해주세요."
 						/>
 						<p class="account_error">{{ errors[0] }}</p>
@@ -56,7 +56,7 @@
 			<button class="search-id_btn search-passwd" v-if="isUpdate" @click="updatePassword">
 				비밀번호 재설정
 			</button>
-			<button class="search-id_btn search-passwd search-passwd--key" v-if="isUpdate" @click="updatePassword">
+			<button class="search-id_btn search-passwd search-passwd--key" v-if="isUpdate" @click="reRequestAuthKey">
 				인증키 재전송
 			</button>
 		</div>
@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import { apiSearchPasswd, apiUpdateUser } from "@/api/user/user";
-import { NOTICE_TITLE } from "@/utils/const";
+import { apiSearchPasswd, apiUpdatePasswd, apiReRequestAuthKey } from "@/api/user/user";
+import { NOTICE_TITLE, ERR_CD } from "@/utils/const";
 import errHandler from "@/utils/errHandler";
 import notice from "@/utils/notice";
 
@@ -75,23 +75,24 @@ export default {
 			// data
 			loginId: "",
 			email: "",
-			password: "",
-			rePassword: "",
+			passwd: "",
+			rePasswd: "",
 			authKey: "",
 			// boolean
 			isUpdate: false,
 		};
 	},
 	created() {
-		// this.checkLoginIdEmail();
+		this.checkLoginIdEmail();
 	},
 	methods: {
 		checkLoginIdEmail() {
-			try {
-				console.log("this.$route", this.$route);
-				if (!this.loginId || !this.email) this.init();
-			} catch (error) {
-				this.$log.info("Check LoginId Email E : ", error);
+			const loginId = this.$route.params.loginId;
+			const email = this.$route.params.email;
+			if (email && loginId) {
+				this.isUpdate = true;
+				this.loginId = loginId;
+				this.email = email;
 			}
 		},
 		async searchPassword() {
@@ -101,7 +102,10 @@ export default {
 					return await notice.alert({ title: NOTICE_TITLE.WAR, text: "필수항목(📌)을 확인해주세요.🙏" });
 				}
 
+				this.$store.commit("onSpinner");
 				await apiSearchPasswd({ loginId: this.loginId, email: this.email });
+				this.$store.commit("offSpinner");
+
 				await notice.alert({
 					title: NOTICE_TITLE.DONE,
 					text: "인증번호를 입력하신 이메일로 발송하였습니다.<br/>확인 후 비밀번호를 변경해주세요.",
@@ -114,63 +118,58 @@ export default {
 		async updatePassword() {
 			try {
 				// check valid
-				if (!(await this.$refs.validObserver.validate())) return alert("필수항목(📌)을 작성해주세요.🙏");
+				if (!(await this.$refs.validObserver.validate())) {
+					return await notice.alert({ title: NOTICE_TITLE.WAR, text: "필수항목(📌)을 확인해주세요.🙏" });
+				}
+
 				const payload = {
+					email: this.email,
 					loginId: this.loginId,
-					password: this.password,
+					passwd: this.passwd,
 					authKey: this.authKey,
 				};
-				await apiUpdateUser(payload);
-				alert("비밀번호가 정상적으로 설정 되었습니다.");
+
+				this.$store.commit("onSpinner");
+				await apiUpdatePasswd(payload);
+				this.$store.commit("offSpinner");
+
+				await notice.alert({ title: NOTICE_TITLE.DONE, text: "비밀번호가 정상적으로 변경 되었습니다." });
 				this.$router.push({ name: "signin" });
-			} catch (e) {
-				// case: validation false
-				if (e.response.data.code === "1") return alert("입력하신 정보를 확인해주세요.");
-				// case: authKey false
-				if (e.response.data.code === "5") return alert("인증코드가 잘못되었습니다.");
-				console.log("Update Password E :", e.response);
+			} catch (error) {
+				switch (error.response.data.errCd) {
+					case ERR_CD.NOT_FOUND:
+						await notice.alert({ title: NOTICE_TITLE.WAR, text: "인증키 또는 입력한 정보가 맞지 않습니다." });
+						break;
+					default:
+						await errHandler.common(error);
+				}
+			}
+		},
+		async reRequestAuthKey() {
+			try {
+				this.$store.commit("onSpinner");
+				const res = await apiReRequestAuthKey({ loginId: this.loginId, target: "passwd" });
+				this.$store.commit("offSpinner");
+
+				await notice.alert({
+					title: NOTICE_TITLE.DONE,
+					text: `가입된 이메일로 인증키를 재전송 하였습니다.<br/>인증키 확인 후 비밀번호 변경을 완료해주세요.
+						<br/>만약, 메일보관함에 없을경우 스팸메일함도 확인해주세요.`,
+				});
+
+				this.$log.info("Re Request Auth Key Res : ", res);
+			} catch (error) {
+				await errHandler.common(error);
 			}
 		},
 		init() {
 			this.loginId = "";
 			this.email = "";
-			this.password = "";
-			this.rePassword = "";
+			this.passwd = "";
+			this.rePasswd = "";
 			this.authKey = "";
 			this.isUpdate = false;
 		},
 	},
 };
 </script>
-
-<style scoped>
-/* checkbox */
-.container:hover input ~ .checkmark {
-	background-color: #6365f142;
-}
-.container input:checked ~ .checkmark {
-	background-color: #6366f1;
-}
-.container input:checked ~ span {
-	color: #6366f1;
-}
-.checkmark:after {
-	content: "";
-	position: absolute;
-	display: none;
-}
-.container input:checked ~ .checkmark:after {
-	display: block;
-}
-.container .checkmark:after {
-	left: 5px;
-	top: 2px;
-	width: 5px;
-	height: 10px;
-	border: solid white;
-	border-width: 0 3px 3px 0;
-	-webkit-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	transform: rotate(45deg);
-}
-</style>

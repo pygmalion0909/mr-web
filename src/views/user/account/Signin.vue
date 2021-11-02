@@ -54,9 +54,13 @@ export default {
 					return await notice.alert({ title: NOTICE_TITLE.WAR, text: "필수항목(📌)을 확인해주세요.🙏" });
 				}
 
+				this.$store.commit("onSpinner");
 				const res = await apiSignin({ loginId: this.loginId, passwd: this.passwd });
-				this.processRes(res.data.data);
+				this.$store.commit("offSpinner");
+
+				this.processSigninRes(res.data.data);
 				this.setInit();
+
 				this.$log.info("Signin Res : ", res);
 			} catch (error) {
 				switch (error.response.data.errCd) {
@@ -68,12 +72,26 @@ export default {
 				}
 			}
 		},
-		processRes(data) {
+		async processSigninRes(data) {
 			if (data.token) {
 				this.$store.commit("setToken", data.token);
 				this.$router.push({ name: "home" });
 			} else {
-				const name = data.info.statusCd === "A" ? "signupAppro" : "searchPasswd";
+				let name, text;
+
+				switch (data.info.statusCd) {
+					case "A":
+						name = "signupAppro";
+						text = "회원가입 인증 단계가 남아있습니다.<br/>인증 페이지로 이동 합니다.";
+						break;
+					case "P":
+						name = "searchPasswd";
+						text = "'비밀번호 찾기' 요청으로 비밀번호 변경이 필요합니다.<br/>비밀번호 변경 페이지로 이동합니다.";
+						break;
+				}
+
+				await notice.alert({ title: NOTICE_TITLE.NOTI, text: text });
+
 				this.$router.push({
 					name: name,
 					params: {

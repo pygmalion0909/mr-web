@@ -4,7 +4,7 @@ import { extend } from "vee-validate";
 import { email, required, confirmed, numeric, size, min } from "vee-validate/dist/rules";
 
 /**
- * @title set validation
+ * set validation
  */
 //email type
 extend("email", {
@@ -36,13 +36,13 @@ extend("min", {
 });
 
 /**
- * @title customizing validation
+ * customizing validation
  */
 // passwordPattern
 extend("passwdPattern", value => {
-	const passwdValidtionRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
-	if (passwdValidtionRegExp.test(value)) return true;
-	return "비밀번호(8~16자 영문, 숫자, 특수문자 포함)";
+	const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/;
+	if (regExp.test(value)) return true;
+	return "6자리 이상, 영문 + 숫자 + 특수문자 포함";
 });
 
 Vue.component("valid", ValidationProvider);

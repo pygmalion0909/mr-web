@@ -14,7 +14,6 @@ const common = async err => {
 			text = "필수정보를 입력하지 않았거나<br/>유효하지 않는 정보를 입력하였습니다<br/>확인 후 다시 시도해주세요.";
 			break;
 	}
-
 	return notice.alert({ title: NOTICE_TITLE.WAR, text: text });
 };
 

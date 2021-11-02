@@ -5,6 +5,8 @@ import store from "@/routes/store";
 import storage from "@/storage/index";
 import intro from "@/routes/intro";
 import error from "@/routes/error";
+import notice from "@/utils/notice";
+import { NOTICE_TITLE } from "@/utils/const";
 // import ceo from "@/routes/ceo";
 
 Vue.use(VueRouter);
@@ -31,13 +33,13 @@ const router = new VueRouter({
 			path: "/signup",
 			name: "signup",
 			component: () => import("@/views/user/account/Signup.vue"),
-			meta: { isSignin: false },
+			meta: { isNotSignin: true },
 		},
 		{
 			path: "/signup/approval",
 			name: "signupAppro",
 			component: () => import("@/views/user/account/SignupApproval.vue"),
-			meta: { isSignin: false },
+			meta: { isNotSignin: true },
 		},
 		// ceo페이지
 		// {
@@ -50,14 +52,21 @@ const router = new VueRouter({
 });
 
 /**
- * @NOTICE 전역 라우터
+ * 전역 라우터
  */
-router.beforeEach((to, from, next) => {
-	// 로그인 상태일 경우 반드시 접근 불가
-	if (!to.meta.isSignin && storage.state.token) {
-		alert("이미 접속중 입니다.");
-		next({ name: "home" });
+router.beforeEach(async (to, from, next) => {
+	// 로그인 상태일 경우 접근 불가
+	if (to.meta.isNotSignin && storage.state.token) {
+		await notice.alert({ title: NOTICE_TITLE.WAR, text: "이미 로그인 상태로 접근이 불가능 합니다." });
+		return next({ name: "home" });
 	}
+
+	// 로그인 상태일 경우만 접근 가능
+	if (to.meta.isSignin && !storage.state.token) {
+		alert("로그인이 필요한 서비스 입니다.");
+		return next({ name: "signin" });
+	}
+
 	next();
 });
 
