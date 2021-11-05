@@ -13,6 +13,9 @@ const common = async err => {
 		case ERR_CD.VALID:
 			text = "필수정보를 입력하지 않았거나<br/>유효하지 않는 정보를 입력하였습니다<br/>확인 후 다시 시도해주세요.";
 			break;
+		case ERR_CD.DUPL:
+			text = "입력하신 값 중에서 중복이 발생하였습니다.<br/>확인 후 다시 한번 시도해주세요.";
+			break;
 	}
 	return notice.alert({ title: NOTICE_TITLE.WAR, text: text });
 };

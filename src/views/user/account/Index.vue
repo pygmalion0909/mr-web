@@ -1,7 +1,7 @@
 <template>
 	<div class="account">
 		<div class="account_left">
-			<img src="@/assets/images/account-cover.jpg" alt="" />
+			<img src="@/assets/images/account-cover.png" alt="" />
 		</div>
 		<div class="account_right">
 			<div class="account-title">{{ title }}</div>

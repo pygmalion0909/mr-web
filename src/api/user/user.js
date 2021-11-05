@@ -2,11 +2,11 @@ import axiosApi from "@/api/user/index";
 
 const baseURL = "/auths";
 
-export function apiSignup(payload) {
-	return axiosApi.post(`${baseURL}`, payload);
-}
 export function apiUpdatePasswd(payload) {
 	return axiosApi.put(`${baseURL}/update/passwd`, payload);
+}
+export function apiSignup(payload) {
+	return axiosApi.post(`${baseURL}/signup`, payload);
 }
 export function apiSignin(payload) {
 	return axiosApi.post(`${baseURL}/signin`, payload);
@@ -19,4 +19,7 @@ export function apiSearchPasswd(payload) {
 }
 export function apiReRequestAuthKey(payload) {
 	return axiosApi.put(`${baseURL}/re-dispatch/auth-key`, payload);
+}
+export function apiCheckUserDuplication(payload) {
+	return axiosApi.post(`${baseURL}/duplication`, payload);
 }

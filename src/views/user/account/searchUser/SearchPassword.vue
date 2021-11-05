@@ -34,7 +34,7 @@
 							class="account_input"
 							type="password"
 							v-model="rePasswd"
-							placeholder="비밀번호 동일하게 입력해주세요."
+							placeholder="비밀번호를 동일하게 입력해주세요."
 						/>
 						<p class="account_error">{{ errors[0] }}</p>
 					</valid>

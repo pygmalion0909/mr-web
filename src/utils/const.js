@@ -73,4 +73,5 @@ export const ERR_CD = {
 	NOT_FOUND: "0-04",
 	FAIL_MAIL: "0-05",
 	VALID: "0-03",
+	DUPL: "0-00",
 };

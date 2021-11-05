@@ -83,6 +83,7 @@ user
 /* common */
 .more-btn{
 	@apply text-center;
+	@apply mt-10;
 }
 .more-btn_btn{
 	@apply bg-dk1;
@@ -96,13 +97,13 @@ user
 }
 .more-btn_btn::after{
 	content: "";
+	z-index: -10;
+	@apply bg-dk1;
 	@apply inline-block;
-	@apply absolute left-1/2 top-1/2;
-	@apply transform -translate-x-1/2 -translate-y-1/2;
-	@apply w-16 h-16;
-	@apply border-2 border-white;
+	@apply absolute left-0 top-0;
+	@apply w-full h-full;
 	@apply rounded-full;
-	@apply animate-pulse;
+	@apply animate-ping;
 }
 .more-btn_btn-icon{
 	@apply text-white text-lg;
@@ -253,7 +254,7 @@ user
 }
 .header_side_nav{
 	@apply relative;
-  @apply w-[250px] h-full;
+  @apply w-[350px] h-full;
   @apply max-w-screen-sm sm:w-[400px];
   @apply max-w-screen-md md:w-[500px];
   @apply z-50;
@@ -540,7 +541,7 @@ user
 }
 .home_store_img{
 	@apply w-full h-96;
-	@apply rounded-md;
+	@apply rounded-tl-md rounded-tr-md;
 	@apply align-top;
 }
 .home_store_fnc {
@@ -841,6 +842,9 @@ user
 }
 .signup_input--passwd{
 	@apply mb-2;
+}
+.signup_input--dupl{
+	@apply border-red-500 border-2;
 }
 .signup_input:focus{
 	@apply border-gray-700;
