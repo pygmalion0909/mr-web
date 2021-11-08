@@ -25,8 +25,8 @@ export default {
 		};
 	},
 	watch: {
-		$route(to, form) {
-			if (to.name !== form.name) this.page = this.$route.name;
+		$route(to, from) {
+			if (to.name !== from.name) this.page = this.$route.name;
 		},
 	},
 };

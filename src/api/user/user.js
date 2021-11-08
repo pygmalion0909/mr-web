@@ -23,3 +23,6 @@ export function apiReRequestAuthKey(payload) {
 export function apiCheckUserDuplication(payload) {
 	return axiosApi.post(`${baseURL}/duplication`, payload);
 }
+export function apiSignupCertification(payload) {
+	return axiosApi.put(`${baseURL}/signup/certification`, payload);
+}

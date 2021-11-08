@@ -12,14 +12,29 @@
 					</div>
 
 					<!-- logo -->
-					<h1 class="header_side_nav_logo" @click="cancelSideNav">
+					<h1 class="header_side_nav_logo">
 						<router-link class="header_nav_logo-btn" :to="{ name: 'home' }"></router-link>
 					</h1>
 				</div>
 
+				<!-- my page -->
+				<div class="header_side_my" v-if="isToken">
+					<div class="header_side_my-img-div">
+						<router-link to="/">
+							<img class="header_side_my-img" src="@/assets/images/my-none-img.png" alt="my img" />
+						</router-link>
+					</div>
+					<div class="header_side_my-info">
+						<p class=" header_side_my-text">
+							<router-link class="header_side_my-link" to="/signin">Superpi</router-link>
+						</p>
+						<p class=" header_side_my-text">환영합니다</p>
+					</div>
+				</div>
+
 				<!-- body(nav) -->
 				<ul class="header_side_nav_ul">
-					<li class="header_side_nav_li" v-for="item in linkDatas" :key="item.id" @click="cancelSideNav">
+					<li class="header_side_nav_li" v-for="item in linkDatas" :key="item.id">
 						<router-link :to="item.link" class="header_side_nav_link">
 							<i :class="item.icon"></i>
 							{{ item.title }}
@@ -30,11 +45,17 @@
 
 			<!-- footer -->
 			<ul class="header_side_nav_footer">
-				<li class="header_side_nav_footer-li" @click="cancelSideNav">
+				<li class="header_side_nav_footer-li" v-if="!isToken">
 					<router-link :to="{ name: 'signin' }" class="header_side_nav_footer-link">로그인</router-link>
 				</li>
-				<li class="header_side_nav_footer-li" @click="cancelSideNav">
+				<li class="header_side_nav_footer-li" v-if="!isToken">
 					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link">회원가입</router-link>
+				</li>
+				<li class="header_side_nav_footer-li" v-if="isToken">
+					<button :to="{ name: 'signup' }" class="header_side_nav_footer-link">나의 페이지</button>
+				</li>
+				<li class="header_side_nav_footer-li" v-if="isToken">
+					<button :to="{ name: 'signup' }" class="header_side_nav_footer-link" @click="logout">로그아웃</button>
 				</li>
 			</ul>
 		</div>
@@ -77,12 +98,27 @@ export default {
 					icon: "fab fa-black-tie header_side_nav_icon",
 					title: "혹시, 사장님이신가요?",
 				},
+				{
+					link: "/",
+					icon: "fas fa-cog",
+					title: "설정",
+				},
 			],
+			isToken: this.$store.state.token ? true : false,
 		};
 	},
 	methods: {
 		cancelSideNav() {
 			this.$emit("cancelSideNav", false);
+		},
+		logout() {
+			this.$store.commit("setLogout");
+			this.cancelSideNav();
+		},
+	},
+	watch: {
+		$route(to, from) {
+			if (to.name != from.name) this.cancelSideNav();
 		},
 	},
 };

@@ -1,3 +1,4 @@
+// TODO 확인 후 사용하지 않으면 삭제
 export const ROLE = {
 	use: "USE",
 	sto: "STO",
@@ -70,8 +71,8 @@ export const NOTICE_TITLE = {
 };
 
 export const ERR_CD = {
+	DUPL: "0-00",
+	VALID: "0-03",
 	NOT_FOUND: "0-04",
 	FAIL_MAIL: "0-05",
-	VALID: "0-03",
-	DUPL: "0-00",
 };

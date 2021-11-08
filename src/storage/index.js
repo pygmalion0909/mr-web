@@ -23,7 +23,7 @@ const storage = new Vuex.Store({
 			state.token = token;
 		},
 		// logout
-		removeAccountInfo(state) {
+		setLogout(state) {
 			localStorage.removeItem(LOCAL_S.TK);
 			state.token = "";
 		},

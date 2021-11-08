@@ -82,7 +82,7 @@ export default {
 				switch (data.info.statusCd) {
 					case "A":
 						name = "signupAppro";
-						text = "회원가입 인증 단계가 남아있습니다.<br/>인증 페이지로 이동 합니다.";
+						text = "회원가입 후 인증단계를 완료 하지 않았습니다.<br/>인증 페이지로 이동 합니다.";
 						break;
 					case "P":
 						name = "searchPasswd";

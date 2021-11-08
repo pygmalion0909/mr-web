@@ -88,6 +88,7 @@ user
 .more-btn_btn{
 	@apply bg-dk1;
 	@apply text-white text-xs;
+	@apply border-white;
 	@apply inline-block;
 	@apply w-20 h-20;
 	@apply pt-2;
@@ -237,10 +238,6 @@ user
 .header_nav_link{
   @apply hover:text-indigo-500;
 }
-.header_nav_link--name{
-  @apply font-nB;
-  @apply hover:text-indigo-500;
-}
 .header_side{
 	@apply flex;
   @apply bg-gray-600 bg-opacity-30;
@@ -268,8 +265,36 @@ user
 	@apply bg-dk1;
 	@apply p-4;
 }
+.header_side_my{
+	@apply px-10 pt-10;
+	@apply flex;
+}
+.header_side_my-img-div{
+	@apply w-1/5;
+	@apply text-center;
+}
+.header_side_my-img{
+	@apply w-20 h-20;
+	@apply align-middle;
+	@apply inline-block;
+	@apply rounded-full;
+}
+.header_side_my-info{
+	@apply w-4/5;
+	@apply px-5;
+}
+.header_side_my-text{
+	@apply text-xl;
+	@apply py-1;
+	@apply overflow-ellipsis overflow-hidden;
+}
+.header_side_my-link{
+	@apply font-nB;
+}
 .header_side_nav_ul{
 	@apply p-10;
+	@apply border;
+	@apply my-3;
 }
 .header_side_nav_li{
 	@apply mb-10;
@@ -278,7 +303,7 @@ user
 	@apply text-xl;
 	@apply inline-block;
 	@apply w-full h-full;
-	@apply py-5;
+	@apply py-3;
 	@apply border-b;
 	@apply max-w-screen-sm sm:text-2xl;
 }
@@ -306,11 +331,11 @@ user
 	@apply mr-5;
 }
 .header_side_nav_cancel{
-  @apply text-right;
+	@apply text-right;
+	@apply mb-8;
 }
 .header_side_nav_cancel-btn{
 	@apply w-10 h-10;
-	@apply mb-20;
 }
 .header_side_nav-cancel-icon{
 	@apply text-4xl text-white;
@@ -794,8 +819,6 @@ user
 .search-passwd_li{
 	@apply mb-24;
 }
-
-
 .signup{
 	@apply py-16;
 }
@@ -807,8 +830,7 @@ user
 	@apply max-w-screen-xl xl:w-5/12;
 }
 .signup_header{
-	@apply mb-10;
-	@apply h-20;
+	@apply mb-5;
 	@apply text-center;
 }
 .signup_header_link-logo{
@@ -818,6 +840,20 @@ user
 .signup_header_link-logo > img{
 	@apply align-bottom;
 	@apply h-full;
+}
+.signup_header_title{
+	@apply text-2xl;
+	@apply py-3;
+	@apply relative;
+}
+.signup_header_title::after{
+	content: "";
+	@apply bg-dk1;
+	@apply w-10 h-1;
+	@apply inline-block;
+	@apply absolute left-1/2 bottom-0;
+	@apply -translate-x-1/2;
+	@apply rounded-md;
 }
 .signup_body_ul{
 	@apply border border-gray-300;
@@ -893,11 +929,90 @@ user
 .signup_footer{
 	@apply text-center;
 }
-
-
-
-
-
+.appro{
+	@apply py-16;
+}
+.appro_contents{
+	@apply w-11/12;
+	@apply m-auto;
+	@apply max-w-screen-sm sm:w-8/12;
+	@apply max-w-screen-lg lg:w-6/12;
+	@apply max-w-screen-xl xl:w-5/12;
+}
+.appro_header{
+	@apply mb-10;
+	@apply text-center;
+}
+.appro_header_title{
+	@apply text-2xl;
+	@apply py-3;
+	@apply relative;
+}
+.appro_header_title::after{
+	content: "";
+	@apply bg-dk1;
+	@apply w-10 h-1;
+	@apply inline-block;
+	@apply absolute left-1/2 bottom-0;
+	@apply -translate-x-1/2;
+	@apply rounded-md;
+}
+.appro_link-logo{
+	@apply inline-block;
+	@apply h-full;
+}
+.appro_link-logo > img{
+	@apply align-bottom;
+	@apply h-full;
+}
+.appro_body_ul{
+	@apply border border-gray-300;
+	@apply rounded-md;
+	@apply p-8;
+}
+.appro_body_li{
+	@apply mb-8;
+}
+.appro_title{
+	@apply text-lg;
+}
+.appro_input{
+	@apply w-full;
+	@apply rounded-md;
+	@apply py-5 px-4;
+	@apply text-lg;
+	@apply border border-gray-400;
+}
+.appro_notice{
+	@apply py-2;
+	@apply text-lg;
+}
+.appro_notice--nickName{
+	@apply font-nB;
+}
+.appro_notice--email{
+	@apply font-nB;
+}
+.appro_btn{
+	@apply w-full h-16;
+	@apply rounded-md;
+	@apply text-lg;
+	@apply tracking-widest;
+}
+.appro_error{
+	@apply text-red-500;
+}
+.appro_btn--ok{
+	@apply bg-dk1;
+	@apply text-white;
+	@apply mb-3;
+}
+.appro_btn--re-auth{
+	@apply border border-indigo-400;
+}
+.appro_footer{
+	@apply text-center;
+}
 
 /* 
 

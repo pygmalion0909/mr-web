@@ -6,6 +6,7 @@
 				<router-link to="/" class="signup_header_link-logo">
 					<img src="@/assets/icons/logo1.svg" alt="" />
 				</router-link>
+				<p class="signup_header_title">회원가입</p>
 			</div>
 
 			<!-- body -->
@@ -143,12 +144,13 @@
 					</li>
 
 					<!-- btn -->
-					<!-- TODO signup_btn-signup--ok동적바인딩 -->
 					<li class="signup_body_li">
 						<button class="signup_btn-signup" @click="signup">가입완료</button>
 					</li>
 				</ul>
 			</validObserver>
+
+			<!-- footer -->
 			<p class="signup_footer">© 2021 By Superpil-김경필. ALL RIGHTS RESERVED.</p>
 		</div>
 	</div>
