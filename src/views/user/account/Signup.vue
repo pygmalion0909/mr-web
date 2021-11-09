@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import { apiSignup, apiCheckUserDuplication } from "@/api/user/user";
+import { apiSignup, apiCheckUserDuplication } from "@/api/user/auth";
 import { NOTICE_TITLE, ERR_CD } from "@/utils/const";
 import errHandler from "@/utils/errHandler";
 import notice from "@/utils/notice";

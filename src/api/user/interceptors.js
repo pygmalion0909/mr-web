@@ -5,6 +5,10 @@ export function setInterceptors(instance) {
 	instance.interceptors.request.use(
 		function(config) {
 			// 요청 성공 직전 호출됩니다.
+
+			// set login token
+			config.headers["MR-AUTH"] = storage.state.token;
+
 			return config;
 		},
 		function(error) {

@@ -25,7 +25,7 @@
 
 		<!-- side-nav -->
 		<transition name="header_side-nav--tran">
-			<SideNav v-if="isShowSideNav" @cancelSideNav="isShowSideNav = false"></SideNav>
+			<SideNav v-show="isShowSideNav" @cancelSideNav="isShowSideNav = false"></SideNav>
 		</transition>
 
 		<!-- img -->
@@ -58,6 +58,7 @@ export default {
 	methods: {
 		logout() {
 			this.$store.commit("setLogout");
+			this.isToken = false;
 		},
 	},
 	computed: {

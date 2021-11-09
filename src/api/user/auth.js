@@ -26,3 +26,6 @@ export function apiCheckUserDuplication(payload) {
 export function apiSignupCertification(payload) {
 	return axiosApi.put(`${baseURL}/signup/certification`, payload);
 }
+export function apiGetUserInfo(payload) {
+	return axiosApi.put(`${baseURL}/signup/certification`, payload);
+}

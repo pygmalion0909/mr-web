@@ -13,7 +13,7 @@
 
 					<!-- logo -->
 					<h1 class="header_side_nav_logo">
-						<router-link class="header_nav_logo-btn" :to="{ name: 'home' }"></router-link>
+						<router-link class="header_nav_logo-btn" :to="{ name: 'home' }" @click.native="cancelSideNav"></router-link>
 					</h1>
 				</div>
 
@@ -25,17 +25,20 @@
 						</router-link>
 					</div>
 					<div class="header_side_my-info">
-						<p class=" header_side_my-text">
-							<router-link class="header_side_my-link" to="/signin">Superpi</router-link>
+						<p class="header_side_my-text">
+							<router-link class="header_side_my-link" :to="{ name: 'home' }" @click.native="cancelSideNav">
+								{{ nickName }}
+							</router-link>
+							<span class="header_side_my-sir">님</span>
 						</p>
-						<p class=" header_side_my-text">환영합니다</p>
+						<p class="header_side_my-text">환영합니다👏</p>
 					</div>
 				</div>
 
 				<!-- body(nav) -->
 				<ul class="header_side_nav_ul">
 					<li class="header_side_nav_li" v-for="item in linkDatas" :key="item.id">
-						<router-link :to="item.link" class="header_side_nav_link">
+						<router-link :to="item.link" class="header_side_nav_link" @click.native="cancelSideNav">
 							<i :class="item.icon"></i>
 							{{ item.title }}
 						</router-link>
@@ -46,13 +49,19 @@
 			<!-- footer -->
 			<ul class="header_side_nav_footer">
 				<li class="header_side_nav_footer-li" v-if="!isToken">
-					<router-link :to="{ name: 'signin' }" class="header_side_nav_footer-link">로그인</router-link>
+					<router-link :to="{ name: 'signin' }" class="header_side_nav_footer-link" @click.native="cancelSideNav">
+						로그인
+					</router-link>
 				</li>
 				<li class="header_side_nav_footer-li" v-if="!isToken">
-					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link">회원가입</router-link>
+					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link" @click.native="cancelSideNav">
+						회원가입
+					</router-link>
 				</li>
 				<li class="header_side_nav_footer-li" v-if="isToken">
-					<button :to="{ name: 'signup' }" class="header_side_nav_footer-link">나의 페이지</button>
+					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link" @click.native="cancelSideNav">
+						나의 페이지
+					</router-link>
 				</li>
 				<li class="header_side_nav_footer-li" v-if="isToken">
 					<button :to="{ name: 'signup' }" class="header_side_nav_footer-link" @click="logout">로그아웃</button>
@@ -64,6 +73,9 @@
 </template>
 
 <script>
+import errHandler from "@/utils/errHandler";
+import { apiGetUserInfo } from "@/api/user/mypage";
+
 export default {
 	data() {
 		return {
@@ -104,21 +116,46 @@ export default {
 					title: "설정",
 				},
 			],
+			nickName: "",
 			isToken: this.$store.state.token ? true : false,
 		};
+	},
+	created() {
+		if (this.isToken) this.getUserInfo();
 	},
 	methods: {
 		cancelSideNav() {
 			this.$emit("cancelSideNav", false);
 		},
+		async getUserInfo() {
+			try {
+				// CONST로 빼기
+				const res = await apiGetUserInfo({ cd: "HOME" });
+				this.nickName = res.data.data.info.nickName;
+				this.isToken = true;
+				this.$log.info("Get User Info Res : ", res);
+			} catch (error) {
+				await errHandler.common(error);
+			}
+		},
 		logout() {
 			this.$store.commit("setLogout");
 			this.cancelSideNav();
+			this.isToken = false;
+			this.nickName = "";
+		},
+	},
+	computed: {
+		checkSignin() {
+			return this.$store.state.token;
 		},
 	},
 	watch: {
 		$route(to, from) {
 			if (to.name != from.name) this.cancelSideNav();
+		},
+		checkSignin(token) {
+			token ? this.getUserInfo() : this.logout();
 		},
 	},
 };

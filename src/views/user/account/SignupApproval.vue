@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import { apiSignupCertification } from "@/api/user/user";
+import { apiSignupCertification } from "@/api/user/auth";
 import { NOTICE_TITLE } from "@/utils/const";
-import { apiReRequestAuthKey } from "@/api/user/user";
+import { apiReRequestAuthKey } from "@/api/user/auth";
 import errHandler from "@/utils/errHandler";
 import notice from "@/utils/notice";
 

@@ -19,7 +19,7 @@
 <script>
 import errHandler from "@/utils/errHandler";
 import notice from "@/utils/notice";
-import { apiSearchLoginId } from "@/api/user/user";
+import { apiSearchLoginId } from "@/api/user/auth";
 import { NOTICE_TITLE } from "@/utils/const";
 
 export default {

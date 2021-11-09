@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { apiSignin } from "@/api/user/user";
+import { apiSignin } from "@/api/user/auth";
 import notice from "@/utils/notice";
 import { NOTICE_TITLE, ERR_CD } from "@/utils/const";
 import errHandler from "@/utils/errHandler";
