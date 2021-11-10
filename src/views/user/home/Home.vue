@@ -31,7 +31,11 @@
 
 				<!-- store title -->
 				<h2>
-					<router-link class="home_store_name" :to="{ name: 'reservationDate', params: { storeId: item.id } }">
+					<router-link
+						class="home_store_name"
+						:to="{ name: 'store-home', params: { storeId: item.id } }"
+						target="_blank"
+					>
 						{{ item.name }}
 					</router-link>
 					<span class="home_store_sct">{{ item.sectorName }}</span>

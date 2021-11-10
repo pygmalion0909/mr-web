@@ -36,6 +36,12 @@ module.exports = {
 			...theme("colors"),
 			active: color.active,
 			noneActive: color.noneActive,
+			dk1: color.dk1,
+		}),
+		borderColor: theme => ({
+			...theme("colors"),
+			DEFAULT: theme("colors.gray.300"),
+			dk1: color.dk1,
 		}),
 		extend: {},
 	},
