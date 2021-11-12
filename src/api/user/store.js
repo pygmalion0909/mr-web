@@ -9,6 +9,11 @@ export function apiGetStoreList(payload) {
 	);
 }
 
+// get store bas imgs
+export function apiGetStoreBasImgs(storeId) {
+	return axiosApi.get(`${baseURL}/bas/imgs/${storeId}`);
+}
+
 // get store info
 export function apiGetStoreInfo(storeId) {
 	return axiosApi.get(`${baseURL}/${storeId}`);

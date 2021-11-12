@@ -3,7 +3,7 @@
 		<!-- contents-left -->
 		<div class="sto-index_contents sto-index_contents--left">
 			<!-- store-img -->
-			<StoreImg></StoreImg>
+			<StoreImg v-if="basImgs" :basImgs="basImgs"></StoreImg>
 
 			<!-- name -->
 			<div class="sto-index_name-div">
@@ -79,6 +79,38 @@
 						</button>
 					</div>
 				</li>
+				<li class="sto-index_mr-list">
+					<div class="sotre-index_mr-header">
+						<p class="sto-index_mr-title"><i class="fas fa-user-edit"></i> 예약자 등록</p>
+						<button @click="toggleMrTab('isInfo')">
+							<i
+								class="fas fa-chevron-circle-down sto-index_mr-icon"
+								:class="{ 'sto-index_mr-icon--on': isMrToggle.isInfo }"
+							></i>
+						</button>
+					</div>
+					<ul v-if="isMrToggle.isInfo">
+						<li>예약자 성함</li>
+						<li>연락처</li>
+						<li>요청사항</li>
+					</ul>
+				</li>
+				<li class="sto-index_mr-list">
+					<div class="sotre-index_mr-header">
+						<p class="sto-index_mr-title"><i class="fas fa-clipboard-check"></i> 예약 확인</p>
+						<button @click="toggleMrTab('isChecking')">
+							<i
+								class="fas fa-chevron-circle-down sto-index_mr-icon"
+								:class="{ 'sto-index_mr-icon--on': isMrToggle.isChecking }"
+							></i>
+						</button>
+					</div>
+					<ul v-if="isMrToggle.isChecking">
+						<li>예약자 성함</li>
+						<li>연락처</li>
+						<li>요청사항</li>
+					</ul>
+				</li>
 			</ul>
 
 			<!-- reservation btn -->
@@ -90,17 +122,15 @@
 </template>
 
 <script>
-import { apiGetCommonCdList } from "@/api/user/common";
+import errHandler from "@/utils/errHandler";
+import { apiGetStoreBasImgs } from "@/api/user/store";
+
+// TODO 개발 체크 후 삭제
+// import { apiGetCommonCdList } from "@/api/user/common";
 import { NOTICE_TITLE } from "@/utils/const";
 import notice from "@/utils/notice";
 import Calendar from "@/components/user/Calendar";
 import StoreImg from "@/views/user/store/components/StoreImg";
-/**
- * @TODO
- * 1. 사진 요청(이미지 슬라이드)
- * 1. 탭메뉴(store기본정보) 데이터 채우기
- * 1. 사장님에게 문의하기
- */
 // import { apiGetStoreInfo, apiGetReservationTime, apiGetItem } from "@/api/user/store";
 
 export default {
@@ -110,14 +140,18 @@ export default {
 	},
 	data() {
 		return {
+			// datas
+			storeId: this.$route.params.storeId,
+			basImgs: "",
 			// boolean
 			isMrToggle: {
 				isDate: true,
 				isTime: false,
 				isItem: false,
+				isInfo: false,
+				isChecking: false,
 			},
 			// etc
-			storeId: this.$route.params.storeId,
 			storeDatas: "",
 			isReservation: false,
 			reservationDay: "",
@@ -127,19 +161,31 @@ export default {
 		};
 	},
 	created() {
-		this.getStoreInfoCode();
+		this.getStoreBasImgs();
+
+		// TODO 개발 확인 후 처리하기
+		// this.getStoreInfoCode();
 		// this.getStoreInfo();
 	},
 	methods: {
-		async getStoreInfoCode() {
+		async getStoreBasImgs() {
 			try {
-				const res = await apiGetCommonCdList();
-				this.tabList = res.data.data.cmList;
-				this.$log.debug("Store Info Code Res : ", res.data.data.cmList);
+				const res = await apiGetStoreBasImgs(this.storeId);
+				this.basImgs = res.data.data.list;
+				this.$log.info("Get Store Bas Imgs Res : ", res.data.data.list);
 			} catch (error) {
-				this.$log.debug("Store Info CodeERes : ", error);
+				await errHandler.common(error);
 			}
 		},
+		// async getStoreInfoCode() {
+		// 	try {
+		// 		const res = await apiGetCommonCdList();
+		// 		this.tabList = res.data.data.cmList;
+		// 		this.$log.debug("Store Info Code Res : ", res.data.data.cmList);
+		// 	} catch (error) {
+		// 		this.$log.debug("Store Info CodeERes : ", error);
+		// 	}
+		// },
 		async noticeNextVersion() {
 			await notice.alert({
 				title: NOTICE_TITLE.NOTI,

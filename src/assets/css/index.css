@@ -1041,14 +1041,14 @@ user
 }
 .sto-index_contents--left{
 	@apply border-r;
-	@apply p-2 pb-10;
+	@apply p-2;
 	@apply overflow-y-scroll;
 }
 .sto-index_name-div{
 	@apply bg-white;
 	@apply text-xl;
 	@apply my-10 p-5;
-	@apply border-t-8 border-dk1;
+	@apply border-t-8 border-b-8 border-dk1;
 }
 .sto-index_name-p{
 	@apply py-0.5;
@@ -1058,7 +1058,7 @@ user
 	@apply font-nB;
 }
 .sto-index_sctor{
-	@apply text-gray-400;
+	color: #ea5757;
 	@apply text-lg;
 }
 .sto-index_one-line{

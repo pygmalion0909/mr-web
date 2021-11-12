@@ -6,19 +6,9 @@
 		<!-- img-list -->
 		<div class="full-img_div">
 			<swiper :options="options" class="full-img_swiper">
-				<swiper-slide>
+				<swiper-slide v-for="item in basImgs" :key="item.id">
 					<div class="full-img_list">
-						<img class="full-img_img" src="@/assets/images/test1.jpg" alt="" />
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="full-img_list">
-						<img class="full-img_img" src="@/assets/images/test2.jpg" alt="" />
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="full-img_list">
-						<img class="full-img_img" src="@/assets/images/test3.jpg" alt="" />
+						<img class="full-img_img" :src="item" alt="" />
 					</div>
 				</swiper-slide>
 			</swiper>
@@ -37,6 +27,12 @@ import "swiper/css/swiper.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
+	props: {
+		basImgs: {
+			type: Array,
+			default: null,
+		},
+	},
 	components: {
 		Swiper,
 		SwiperSlide,
