@@ -7,6 +7,7 @@ Vue.use(Vuex);
 const storage = new Vuex.Store({
 	state: {
 		token: JSON.parse(localStorage.getItem(LOCAL_S.TK)) || "",
+		storeBasInfo: "",
 		isSpinner: false,
 		notice: {
 			isOn: false,

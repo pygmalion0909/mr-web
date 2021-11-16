@@ -108,7 +108,10 @@
 										class="fas fa-check-circle signup_agree_icon"
 										:class="{ 'signup_agree_icon--ok': isAgree.isService }"
 									></i>
-									<router-link to="/" class="signup_agree_link">서비스 이용약관</router-link>에 동의합니다.
+									<router-link :to="{ name: 'serviceTerms' }" class="signup_agree_link" target="_blank">
+										서비스 이용약관
+									</router-link>
+									에동의합니다.
 									<span class="signup_agree_must"> (필수)</span>
 								</button>
 							</li>
@@ -118,7 +121,10 @@
 										class="fas fa-check-circle signup_agree_icon"
 										:class="{ 'signup_agree_icon--ok': isAgree.isPerson }"
 									></i>
-									<router-link to="/" class="signup_agree_link">개인정보 수집/이용</router-link>에 동의합니다.
+									<router-link :to="{ name: 'personTerms' }" class="signup_agree_link" target="_blank">
+										개인정보 수집/이용
+									</router-link>
+									에 동의합니다.
 									<span class="signup_agree_must"> (필수)</span>
 								</button>
 							</li>

@@ -2,7 +2,7 @@ export default [
 	{
 		path: "/store",
 		name: "store",
-		component: () => import("@/views/user/store/Index.vue"),
+		component: () => import("@/views/user/store/Store.vue"),
 		children: [
 			{
 				path: "/store-home/:storeId",

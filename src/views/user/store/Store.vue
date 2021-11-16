@@ -7,11 +7,9 @@
 
 			<!-- name -->
 			<div class="sto-index_name-div">
-				<p class="sto-index_name-p sto-index_name">몽중헌 반포점</p>
-				<p class="sto-index_name-p sto-index_sctor">식당/카페•양식</p>
-				<p class="sto-index_name-p sto-index_one-line">
-					꿈속의 집으로 당신을 초대합니다. 중요한 순간을 위한 정통 차이니즈 다이닝
-				</p>
+				<p class="sto-index_name-p sto-index_name">{{ storeBasInfo.name }}</p>
+				<p class="sto-index_name-p sto-index_sctor">{{ storeBasInfo.sectorName }} • {{ storeBasInfo.subSectorName }}</p>
+				<p class="sto-index_name-p sto-index_one-line">{{ storeBasInfo.oneLineIntro }}</p>
 			</div>
 
 			<!-- nav -->
@@ -54,7 +52,7 @@
 							></i>
 						</button>
 					</div>
-					<Calendar v-if="isMrToggle.isDate"></Calendar>
+					<RsvCalendar v-if="isMrToggle.isDate" :storeId="storeId"></RsvCalendar>
 				</li>
 				<li class="sto-index_mr-list">
 					<div class="sotre-index_mr-header">
@@ -66,7 +64,6 @@
 							></i>
 						</button>
 					</div>
-					<Calendar v-if="isMrToggle.isTime"></Calendar>
 				</li>
 				<li class="sto-index_mr-list">
 					<div class="sotre-index_mr-header">
@@ -122,27 +119,24 @@
 </template>
 
 <script>
-import errHandler from "@/utils/errHandler";
 import { apiGetStoreBasImgs } from "@/api/user/store";
-
-// TODO 개발 체크 후 삭제
-// import { apiGetCommonCdList } from "@/api/user/common";
 import { NOTICE_TITLE } from "@/utils/const";
+import RsvCalendar from "@/views/user/store/components/RsvCalendar";
+import errHandler from "@/utils/errHandler";
 import notice from "@/utils/notice";
-import Calendar from "@/components/user/Calendar";
 import StoreImg from "@/views/user/store/components/StoreImg";
-// import { apiGetStoreInfo, apiGetReservationTime, apiGetItem } from "@/api/user/store";
 
 export default {
 	components: {
-		Calendar,
 		StoreImg,
+		RsvCalendar,
 	},
 	data() {
 		return {
 			// datas
 			storeId: this.$route.params.storeId,
 			basImgs: "",
+			storeBasInfo: "",
 			// boolean
 			isMrToggle: {
 				isDate: true,
@@ -151,41 +145,21 @@ export default {
 				isInfo: false,
 				isChecking: false,
 			},
-			// etc
-			storeDatas: "",
-			isReservation: false,
-			reservationDay: "",
-			workTimeDatas: "",
-			itemDatas: "",
-			selectTime: "",
 		};
 	},
 	created() {
 		this.getStoreBasImgs();
-
-		// TODO 개발 확인 후 처리하기
-		// this.getStoreInfoCode();
-		// this.getStoreInfo();
 	},
 	methods: {
 		async getStoreBasImgs() {
 			try {
 				const res = await apiGetStoreBasImgs(this.storeId);
 				this.basImgs = res.data.data.list;
-				this.$log.info("Get Store Bas Imgs Res : ", res.data.data.list);
+				this.$log.info("Get Store Bas Imgs Res : ", res.data.data);
 			} catch (error) {
 				await errHandler.common(error);
 			}
 		},
-		// async getStoreInfoCode() {
-		// 	try {
-		// 		const res = await apiGetCommonCdList();
-		// 		this.tabList = res.data.data.cmList;
-		// 		this.$log.debug("Store Info Code Res : ", res.data.data.cmList);
-		// 	} catch (error) {
-		// 		this.$log.debug("Store Info CodeERes : ", error);
-		// 	}
-		// },
 		async noticeNextVersion() {
 			await notice.alert({
 				title: NOTICE_TITLE.NOTI,
@@ -196,29 +170,16 @@ export default {
 		toggleMrTab(target) {
 			this.isMrToggle[target] = !this.isMrToggle[target];
 		},
-		// async getStoreInfo() {
-		// 	const res = await apiGetStoreInfo(this.$route.params.storeId);
-		// 	console.log("res", res);
-		// 	this.storeDatas = res.data.data.list[0];
-		// },
-		// async showReservationTime(payload) {
-		// 	console.log("payload", payload);
-		// 	if (payload) this.isReservation = true;
-		// 	this.reservationDay = payload.date.date;
-		// 	const res = await apiGetReservationTime({ workDayId: 1 });
-		// 	console.log("work time res", res);
-		// 	this.workTimeDatas = res.data.result;
-		// 	const itemRes = await apiGetItem();
-		// 	console.log("itemRes res", itemRes);
-		// 	this.itemDatas = itemRes.data.result;
-		// },
-		// makeReservation() {
-		// 	console.log("this.selectTime", this.selectTime);
-		// },
-		// cancel() {
-		// 	this.isReservation = false;
-		// 	this.selectTime = "";
-		// },
+	},
+	computed: {
+		getStoreBasInfo() {
+			return this.$store.state.storeBasInfo;
+		},
+	},
+	watch: {
+		getStoreBasInfo(val) {
+			this.storeBasInfo = val;
+		},
 	},
 };
 </script>

@@ -3,33 +3,27 @@
 		<table class="sto-home_table">
 			<tr class="sto-home_tr">
 				<td><i class="fas fa-phone-square sto-home_icon"></i></td>
-				<td class="sto-home_td">02-733-5775</td>
+				<td class="sto-home_td">{{ infoDatas.number }}</td>
 			</tr>
 			<tr class="sto-home_tr">
 				<td><i class="fas fa-map-marker-alt sto-home_icon"></i></td>
-				<td class="sto-home_td">서울 종로구 종로 19지번 1종각역1번 출구에서 233m</td>
+				<td class="sto-home_td">{{ infoDatas.address }}</td>
 			</tr>
 			<tr class="sto-home_tr">
 				<td><i class="far fa-clock sto-home_icon"></i></td>
 				<td class="sto-home_td">
-					<p>평일 10:30 - 20:30</p>
-					<p>주말 10:30 - 12:30</p>
-					<p>공휴일 10:30 - 12:30</p>
+					<p>평일 {{ infoDatas.wdStWkTm }} - {{ infoDatas.wdEdWkTm }}</p>
+					<p>주말 {{ infoDatas.weStWkTm }} - {{ infoDatas.weEdWkTm }}</p>
 				</td>
 			</tr>
 			<tr class="sto-home_tr">
 				<td><i class="far fa-file-alt sto-home_icon"></i></td>
-				<td class="sto-home_td">
-					★ 긴급재난지원금 사용 가능합니다 ★ 당신의 아름다운 피부를 위한 빛과 같은 존재 꿈꾸는 맑은 피부와 동안 얼굴,
-					마음껏 웃을 수 있는 밝은 모습으로 거듭날 수 있도록 도와드리겠습니다. 1) 환자들의 마음을 충분히 이해합니다. 2)
-					전문화되고 차별화된 의료 서비스를 제공합니다. 3) 환자가 만족할 때까지 최선을 다합니다. 4) 높은 도덕성과 전문적
-					역량을 갖추어 진행합니다. 5) 진취적 사고와 개방된 상담을 통해 최선의 서비스를 진행합니다.
-				</td>
+				<td class="sto-home_td" v-html="infoDatas.notice"></td>
 			</tr>
 			<tr class="sto-home_tr">
 				<td><i class="fas fa-link sto-home_icon"></i></td>
 				<td class="sto-home_td">
-					<a href="http://wwww.lanmiereskin.co.kr" class="text-indigo-500">http://wwww.lanmiereskin.co.krefefefefe</a>
+					<a :href="`https://${infoDatas.url}`" target="_blank">{{ infoDatas.url }}</a>
 				</td>
 			</tr>
 		</table>
@@ -37,5 +31,32 @@
 </template>
 
 <script>
-export default {};
+import { apiGetStoreBasInfo } from "@/api/user/store";
+import errHandler from "@/utils/errHandler";
+
+export default {
+	data() {
+		return {
+			// route
+			storeId: this.$route.params.storeId,
+			// datas
+			infoDatas: "",
+		};
+	},
+	created() {
+		this.getStoreBasInfo();
+	},
+	methods: {
+		async getStoreBasInfo() {
+			try {
+				const res = await apiGetStoreBasInfo(this.storeId);
+				this.infoDatas = res.data.data.info;
+				this.$store.state.storeBasInfo = res.data.data.info;
+				this.$log.info("Get Store Bas Info Res : ", res);
+			} catch (error) {
+				await errHandler.common(error);
+			}
+		},
+	},
+};
 </script>

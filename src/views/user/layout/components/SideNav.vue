@@ -38,7 +38,20 @@
 				<!-- body(nav) -->
 				<ul class="header_side_nav_ul">
 					<li class="header_side_nav_li" v-for="item in linkDatas" :key="item.id">
-						<router-link :to="item.link" class="header_side_nav_link" @click.native="cancelSideNav">
+						<button
+							v-if="!item.isActive"
+							class="header_side_nav_link header_side_nav_link--noneActive"
+							@click="noticeNextVersion"
+						>
+							<i :class="item.icon"></i>
+							{{ item.title }}
+						</button>
+						<router-link
+							v-if="item.isActive"
+							:to="{ name: item.linkName }"
+							class="header_side_nav_link"
+							@click.native="cancelSideNav"
+						>
 							<i :class="item.icon"></i>
 							{{ item.title }}
 						</router-link>
@@ -73,47 +86,50 @@
 </template>
 
 <script>
-import errHandler from "@/utils/errHandler";
 import { apiGetUserInfo } from "@/api/user/mypage";
+import notice from "@/utils/notice";
+import { NOTICE_TITLE } from "@/utils/const";
+import errHandler from "@/utils/errHandler";
 
 export default {
 	data() {
 		return {
 			linkDatas: [
 				{
-					link: "/",
+					linkName: "intro",
 					icon: "fas fa-registered header_side_nav_icon",
 					title: "Make Reservation",
+					isActive: true,
 				},
 				{
-					link: "/",
+					linkName: "",
 					icon: "fas fa-certificate header_side_nav_icon",
-					title: "Badge",
+					title: "뱃지",
+					isActive: false,
 				},
 				{
-					link: "/",
+					linkName: "",
 					icon: "far fa-flag header_side_nav_icon",
 					title: "공지사항",
+					isActive: false,
 				},
 				{
-					link: "/",
+					linkName: "serviceTerms",
 					icon: "far fa-file-alt header_side_nav_icon",
 					title: "이용약관",
+					isActive: true,
 				},
 				{
-					link: "/",
+					linkName: "personTerms",
 					icon: "far fa-address-card header_side_nav_icon",
 					title: "개인정보처리방침",
+					isActive: true,
 				},
 				{
-					link: "/",
+					linkName: "",
 					icon: "fab fa-black-tie header_side_nav_icon",
 					title: "혹시, 사장님이신가요?",
-				},
-				{
-					link: "/",
-					icon: "fas fa-cog",
-					title: "설정",
+					isActive: false,
 				},
 			],
 			nickName: "",
@@ -124,9 +140,6 @@ export default {
 		if (this.isToken) this.getUserInfo();
 	},
 	methods: {
-		cancelSideNav() {
-			this.$emit("cancelSideNav", false);
-		},
 		async getUserInfo() {
 			try {
 				// CONST로 빼기
@@ -143,6 +156,15 @@ export default {
 			this.cancelSideNav();
 			this.isToken = false;
 			this.nickName = "";
+		},
+		cancelSideNav() {
+			this.$emit("cancelSideNav", false);
+		},
+		async noticeNextVersion() {
+			await notice.alert({
+				title: NOTICE_TITLE.NOTI,
+				text: "조금만 기다려주세요😊<br/>2.0.0버전에서 서비스를 이용할 수 있습니다.",
+			});
 		},
 	},
 	computed: {

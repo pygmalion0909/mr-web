@@ -15,8 +15,8 @@ export function apiGetStoreBasImgs(storeId) {
 }
 
 // get store info
-export function apiGetStoreInfo(storeId) {
-	return axiosApi.get(`${baseURL}/${storeId}`);
+export function apiGetStoreBasInfo(storeId) {
+	return axiosApi.get(`${baseURL}/bas/${storeId}`);
 }
 
 // get store sector list

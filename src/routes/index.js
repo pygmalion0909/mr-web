@@ -41,6 +41,22 @@ const router = new VueRouter({
 			component: () => import("@/views/user/account/SignupApproval.vue"),
 			meta: { isNotSignin: true },
 		},
+		{
+			path: "/terms",
+			component: () => import("@/views/user/terms/Terms.vue"),
+			children: [
+				{
+					path: "/terms/service",
+					name: "serviceTerms",
+					component: () => import("@/views/user/terms/ServiceTerms.vue"),
+				},
+				{
+					path: "/terms/person",
+					name: "personTerms",
+					component: () => import("@/views/user/terms/PersonTerms.vue"),
+				},
+			],
+		},
 		// ceo페이지
 		// {
 		// 	path: "/ceo",

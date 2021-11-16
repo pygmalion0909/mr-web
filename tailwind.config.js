@@ -12,6 +12,7 @@ module.exports = {
 	mode: "jit", // px단위 사용을 위한 모드 설정
 	purge: ["./index.html", "@/**/*.{vue,js,ts,jsx,tsx}"],
 	darkMode: false, // or 'media' or 'class'
+	important: true,
 	theme: {
 		// 반응형 스크린 사이즈
 		screens: {

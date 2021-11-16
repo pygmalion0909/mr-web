@@ -1,14 +1,7 @@
 export default [
 	{
-		path: "",
+		path: "/intro",
 		name: "intro",
-		component: () => import("@/views/user/intro/Frame.vue"),
-		children: [
-			{
-				path: "/mr",
-				name: "mr",
-				component: () => import("@/views/user/intro/Mr.vue"),
-			},
-		],
+		component: () => import("@/views/user/intro/Intro.vue"),
 	},
 ];

@@ -1,4 +1,11 @@
-// import axiosApi from "@/api/index";
+import axiosApi from "@/api/user/index";
+
+const baseURL = "/reservation";
+
+// get reservation day list
+export function apiGetRsvDay(payload) {
+	return axiosApi(`${baseURL}/date-list?yearMth=${payload.yearMth}&storeId=${payload.storeId}`);
+}
 
 // reservation
 export function apiGetReservationList() {
