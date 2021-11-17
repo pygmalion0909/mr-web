@@ -52,7 +52,7 @@
 							></i>
 						</button>
 					</div>
-					<RsvCalendar v-if="isMrToggle.isDate" :storeId="storeId"></RsvCalendar>
+					<RsvCalendar v-show="isMrToggle.isDate" :storeId="storeId"></RsvCalendar>
 				</li>
 				<li class="sto-index_mr-list">
 					<div class="sotre-index_mr-header">

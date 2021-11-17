@@ -2,9 +2,14 @@ import axiosApi from "@/api/user/index";
 
 const baseURL = "/reservation";
 
-// get reservation day list
-export function apiGetRsvDay(payload) {
-	return axiosApi(`${baseURL}/date-list?yearMth=${payload.yearMth}&storeId=${payload.storeId}`);
+// get work day list
+export function apiGetRsvDay(storeId) {
+	return axiosApi(`${baseURL}/day/${storeId}`);
+}
+
+// get reservation full date list
+export function apiGetRsvFullDate(payload) {
+	return axiosApi(`${baseURL}/full-date?yearMth=${payload.yearMth}&storeId=${payload.storeId}`);
 }
 
 // reservation
