@@ -4,42 +4,25 @@ const baseURL = "/reservation";
 
 // get work day list
 export function apiGetRsvDay(storeId) {
-	return axiosApi(`${baseURL}/day/${storeId}`);
+	return axiosApi.get(`${baseURL}/day/${storeId}`);
 }
 
 // get reservation full date list
 export function apiGetRsvFullDate(payload) {
-	return axiosApi(`${baseURL}/full-date?yearMth=${payload.yearMth}&storeId=${payload.storeId}`);
+	return axiosApi.get(`${baseURL}/full-date?yearMth=${payload.yearMth}&storeId=${payload.storeId}`);
 }
 
-// reservation
-export function apiGetReservationList() {
-	// return axiosApi.get(`/reservation/day/${payload.storeId}`);
-}
-export function apiGetRsvTimeList(payload) {
-	console.log("reservation time payload", payload);
-	const res = {
-		data: {
-			data: {
-				list: [
-					{ id: "1", time: "09:00", status: "Y" },
-					{ id: "2", time: "10:00", status: "N" },
-					{ id: "3", time: "11:00", status: "N" },
-					{ id: "4", time: "12:00", status: "Y" },
-					{ id: "5", time: "13:00", status: "Y" },
-					{ id: "6", time: "14:00", status: "N" },
-					{ id: "7", time: "15:00", status: "N" },
-					{ id: "8", time: "16:00", status: "Y" },
-					{ id: "9", time: "17:00", status: "Y" },
-					{ id: "10", time: "18:00", status: "Y" },
-				],
-			},
-		},
-	};
-	return res;
-	// return axiosApi.get(`/time/${payload.workDayId}`);
+// get reservation time list
+export function apiGetRsvTime(payload) {
+	return axiosApi.get(`${baseURL}/time?dayCd=${payload.dayCd}&storeId=${payload.storeId}&rsvDt=${payload.rsvDt}`);
 }
 
-export function apiGetItem() {
-	// return axiosApi.get(`/item`);
+// get reservation item list
+export function apiGetRsvItem(payload) {
+	return axiosApi.get(`${baseURL}/item?dayCd=${payload.dayCd}&storeId=${payload.storeId}&rsvTms=${payload.rsvTms}`);
+}
+
+// register reservation
+export function apiRegisterRsv(payload) {
+	return axiosApi.post(`${baseURL}`, payload);
 }

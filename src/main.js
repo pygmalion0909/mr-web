@@ -29,9 +29,6 @@ const options = {
 };
 Vue.use(VueLogger, options);
 
-// import VueAwesomeSwiper from "vue-awesome-swiper";
-// Vue.use(VueAwesomeSwiper);
-
 Vue.config.productionTip = false;
 new Vue({
 	render: h => h(App),

@@ -1,5 +1,7 @@
 <template>
 	<div class="mr">
+		MR은 사업주님의 특성에 맞게, 업종에 따라 따라 다양하게 예약 시스템을 적용 할 수 있습니다.
+
 		<h3 class="mr__title mr__title--welcome">
 			Make Reservation<span class="mr__under">(이하 MR)</span>에 오신걸 환영합니다.
 		</h3>

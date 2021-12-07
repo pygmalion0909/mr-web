@@ -1,5 +1,5 @@
 <template>
-	<FullCalendar ref="fc" :options="calendarOptions" />
+	<FullCalendar ref="fc" :options="fcOptions" />
 </template>
 
 <script>
@@ -24,11 +24,13 @@ export default {
 	data() {
 		return {
 			// calendar
-			calendarOptions: {
+			fcOptions: {
 				// 한국어 설정
 				locale: "ko",
 				// 플러그인 설정
 				plugins: [dayGridPlugin, interactionPlugin],
+				// 다음달 일자 숨김
+				showNonCurrentDates: false,
 				// calendar 월(month)화면
 				initialView: "dayGridMonth",
 				// 날짜 클릭 이벤트
@@ -56,10 +58,9 @@ export default {
 						click: this.onFcNextBtn,
 					},
 				},
-				// 가게 영업요일 활성화
+				// 가게 영업요일(work day) 활성화
 				businessHours: {
-					// days of week. an array of zero-based day of week integers (0=Sunday)
-					daysOfWeek: [], // 활성화 될 날짜 지정
+					daysOfWeek: [], // 영업요일 활성화 될 날짜 지정(0=Sunday)
 				},
 				// 가게 예약불가능한 날짜 설정
 				events: [],
@@ -78,7 +79,7 @@ export default {
 		async getRsvDay() {
 			try {
 				const res = await apiGetRsvDay(this.storeId);
-				this.calendarOptions.businessHours.daysOfWeek = this.getDayNum(res.data.data.list);
+				this.fcOptions.businessHours.daysOfWeek = this.getDayNum(res.data.data.list);
 				this.$log.info("Get Rsv Day Res : ", res);
 			} catch (error) {
 				await errHandler.common(error);
@@ -86,27 +87,45 @@ export default {
 		},
 		async getRsvFullDate() {
 			try {
+				this.$store.commit("onSpinner");
+
 				const res = await apiGetRsvFullDate({ yearMth: this.yearMth, storeId: this.storeId });
-				this.calendarOptions.events = [];
+				this.fcOptions.events = [];
 				res.data.data.list.forEach(el => {
-					this.calendarOptions.events.push({
-						start: el.rsvDt,
+					this.$log.info("el", el);
+					this.fcOptions.events.push({
+						start: el,
 						overlap: false,
 						display: "background",
 					});
 				});
+
+				this.$store.commit("offSpinner");
 				this.$log.info("Get Rsv Full-Date Res : ", res);
 			} catch (error) {
 				await errHandler.common(error);
 			}
 		},
-		// arg파라미터 받을수있음
 		handleDateClick(info) {
-			console.log("info ", info);
-			console.log("info.view ", info.view);
-			console.log("Clicked on: " + info.dateStr);
-			// change the day's background color just for fun
-			// info.dayEl.style.backgroundColor = "red"; // 선택된 영역 색상 변경
+			// set data
+			const date = info.dateStr;
+			const day = dayjs(info.date)
+				.format("ddd")
+				.toUpperCase();
+
+			// check active date
+			// 1. check work day (daysOfWeek)
+			const dayNum = this.getDayNum([day]);
+			if (!this.fcOptions.businessHours.daysOfWeek.includes(dayNum[0])) return;
+
+			// 2. check not full date (events)
+			const isFullDate = this.fcOptions.events.some(el => {
+				return el.start == date;
+			});
+			if (isFullDate) return;
+
+			// on emit
+			this.$emit("selectRsvDate", { dayCd: day, date: date });
 		},
 		getDayNum(list) {
 			let dayNum = [];

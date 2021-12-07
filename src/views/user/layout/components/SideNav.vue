@@ -20,13 +20,13 @@
 				<!-- my page -->
 				<div class="header_side_my" v-if="isToken">
 					<div class="header_side_my-img-div">
-						<router-link to="/">
+						<router-link to="/" @click.native="nextV.myPage">
 							<img class="header_side_my-img" src="@/assets/images/my-none-img.png" alt="my img" />
 						</router-link>
 					</div>
 					<div class="header_side_my-info">
 						<p class="header_side_my-text">
-							<router-link class="header_side_my-link" :to="{ name: 'home' }" @click.native="cancelSideNav">
+							<router-link class="header_side_my-link" :to="{ name: 'home' }" @click.native="nextV.myPage">
 								{{ nickName }}
 							</router-link>
 							<span class="header_side_my-sir">님</span>
@@ -41,7 +41,7 @@
 						<button
 							v-if="!item.isActive"
 							class="header_side_nav_link header_side_nav_link--noneActive"
-							@click="noticeNextVersion"
+							@click="noticeNextV(item.linkName)"
 						>
 							<i :class="item.icon"></i>
 							{{ item.title }}
@@ -72,7 +72,7 @@
 					</router-link>
 				</li>
 				<li class="header_side_nav_footer-li" v-if="isToken">
-					<router-link :to="{ name: 'signup' }" class="header_side_nav_footer-link" @click.native="cancelSideNav">
+					<router-link :to="{ name: 'home' }" class="header_side_nav_footer-link" @click.native="nextV.myPage">
 						나의 페이지
 					</router-link>
 				</li>
@@ -87,28 +87,27 @@
 
 <script>
 import { apiGetUserInfo } from "@/api/user/mypage";
-import notice from "@/utils/notice";
-import { NOTICE_TITLE } from "@/utils/const";
+import nextV from "@/utils/nextV";
 import errHandler from "@/utils/errHandler";
 
 export default {
 	data() {
 		return {
 			linkDatas: [
+				// {
+				// 	linkName: "intro",
+				// 	icon: "fas fa-registered header_side_nav_icon",
+				// 	title: "Make Reservation",
+				// 	isActive: true,
+				// },
 				{
-					linkName: "intro",
-					icon: "fas fa-registered header_side_nav_icon",
-					title: "Make Reservation",
-					isActive: true,
-				},
-				{
-					linkName: "",
+					linkName: "badge",
 					icon: "fas fa-certificate header_side_nav_icon",
 					title: "뱃지",
 					isActive: false,
 				},
 				{
-					linkName: "",
+					linkName: "notice",
 					icon: "far fa-flag header_side_nav_icon",
 					title: "공지사항",
 					isActive: false,
@@ -126,7 +125,7 @@ export default {
 					isActive: true,
 				},
 				{
-					linkName: "",
+					linkName: "ceo",
 					icon: "fab fa-black-tie header_side_nav_icon",
 					title: "혹시, 사장님이신가요?",
 					isActive: false,
@@ -134,6 +133,7 @@ export default {
 			],
 			nickName: "",
 			isToken: this.$store.state.token ? true : false,
+			nextV: nextV,
 		};
 	},
 	created() {
@@ -160,11 +160,18 @@ export default {
 		cancelSideNav() {
 			this.$emit("cancelSideNav", false);
 		},
-		async noticeNextVersion() {
-			await notice.alert({
-				title: NOTICE_TITLE.NOTI,
-				text: "조금만 기다려주세요😊<br/>2.0.0버전에서 서비스를 이용할 수 있습니다.",
-			});
+		async noticeNextV(target) {
+			switch (target) {
+				case "badge":
+					this.nextV.badge();
+					break;
+				case "notice":
+					this.nextV.noticeMr();
+					break;
+				case "ceo":
+					this.nextV.ceo();
+					break;
+			}
 		},
 	},
 	computed: {

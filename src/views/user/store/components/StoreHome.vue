@@ -2,28 +2,28 @@
 	<div class="sto-home">
 		<table class="sto-home_table">
 			<tr class="sto-home_tr">
-				<td><i class="fas fa-phone-square sto-home_icon"></i></td>
+				<td class="sto-home_icon-td"><i class="fas fa-phone-square sto-home_icon"></i></td>
 				<td class="sto-home_td">{{ infoDatas.number }}</td>
 			</tr>
 			<tr class="sto-home_tr">
-				<td><i class="fas fa-map-marker-alt sto-home_icon"></i></td>
+				<td class="sto-home_icon-td"><i class="fas fa-map-marker-alt sto-home_icon"></i></td>
 				<td class="sto-home_td">{{ infoDatas.address }}</td>
 			</tr>
-			<tr class="sto-home_tr">
-				<td><i class="far fa-clock sto-home_icon"></i></td>
+			<tr class="sto-home_tr" v-if="infoDatas.wdStWkTm || infoDatas.weStWkTm">
+				<td class="sto-home_icon-td"><i class="far fa-clock sto-home_icon"></i></td>
 				<td class="sto-home_td">
-					<p>평일 {{ infoDatas.wdStWkTm }} - {{ infoDatas.wdEdWkTm }}</p>
-					<p>주말 {{ infoDatas.weStWkTm }} - {{ infoDatas.weEdWkTm }}</p>
+					<p v-if="infoDatas.wdStWkTm">평일 {{ infoDatas.wdStWkTm }} - {{ infoDatas.wdEdWkTm }}</p>
+					<p v-if="infoDatas.weStWkTm">주말 {{ infoDatas.weStWkTm }} - {{ infoDatas.weEdWkTm }}</p>
 				</td>
 			</tr>
 			<tr class="sto-home_tr">
-				<td><i class="far fa-file-alt sto-home_icon"></i></td>
+				<td class="sto-home_icon-td"><i class="far fa-file-alt sto-home_icon"></i></td>
 				<td class="sto-home_td" v-html="infoDatas.notice"></td>
 			</tr>
-			<tr class="sto-home_tr">
-				<td><i class="fas fa-link sto-home_icon"></i></td>
+			<tr class="sto-home_tr" v-if="infoDatas.url">
+				<td class="sto-home_icon-td"><i class="fas fa-link sto-home_icon"></i></td>
 				<td class="sto-home_td">
-					<a :href="`https://${infoDatas.url}`" target="_blank">{{ infoDatas.url }}</a>
+					<button class="sto-home_link" @click="openStoreUrl">{{ infoDatas.url }}</button>
 				</td>
 			</tr>
 		</table>
@@ -56,6 +56,9 @@ export default {
 			} catch (error) {
 				await errHandler.common(error);
 			}
+		},
+		openStoreUrl() {
+			window.open(this.infoDatas.url, "_blank");
 		},
 	},
 };

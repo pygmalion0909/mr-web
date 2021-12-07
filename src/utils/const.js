@@ -75,4 +75,5 @@ export const ERR_CD = {
 	VALID: "0-03",
 	NOT_FOUND: "0-04",
 	FAIL_MAIL: "0-05",
+	FORBIDDEN: "0-06",
 };

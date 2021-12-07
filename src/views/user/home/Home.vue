@@ -17,7 +17,9 @@
 		<ul class="home_store" v-if="storeDatas.length > 0">
 			<li class="home_store_li" v-for="item in storeDatas" :key="item.id">
 				<!-- store img -->
-				<img class="home_store_img" :src="item.imgUrl" alt="가게이미지" />
+				<button class="home_store_img-link" @click="goDetailStore(item)">
+					<img class="home_store_img" :src="item.imgUrl" alt="가게이미지" />
+				</button>
 
 				<!-- store fnc -->
 				<ul class="home_store_fnc">
@@ -25,19 +27,15 @@
 						<button @click="showBadge(item)"><i class="fas fa-certificate home_store_fnc-icon"></i></button>
 					</li>
 					<li>
-						<button @click="noticeNext"><i class="far fa-bookmark home_store_fnc-icon"></i></button>
+						<button @click="nextV.bookmark"><i class="far fa-bookmark home_store_fnc-icon"></i></button>
 					</li>
 				</ul>
 
 				<!-- store title -->
 				<h2>
-					<router-link
-						class="home_store_name"
-						:to="{ name: 'store-home', params: { storeId: item.id } }"
-						target="_blank"
-					>
+					<button class="home_store_name" @click="goDetailStore(item)">
 						{{ item.name }}
-					</router-link>
+					</button>
 					<span class="home_store_sct">{{ item.sectorName }}</span>
 				</h2>
 
@@ -57,14 +55,14 @@
 
 				<!-- show badge -->
 				<div class="home_badge" v-if="showBadgeItem.id === item.id">
-					<img class="spinner_img" src="@/assets/images/spinner.svg" alt="" v-if="isBadgeSpin" />
+					<img class="spinner_img" src="@/assets/images/spinner.svg" v-if="isBadgeSpin" />
 					<i class="fas fa-certificate home_badge_icon"></i>
 					<router-link class="home_badge_link" :to="{ name: 'home' }">
 						BADGE <i class="fas fa-arrow-circle-right home_badge_link-icon"></i>
 					</router-link>
 					<button class="home_badge_btn" @click="showBadgeItem = ''"><i class="fas fa-times"></i></button>
-
 					<ul class="home_badge_ul">
+						<li class="home_badge_none" v-if="badgeDatas.length <= 0">획득한 뱃지가 없습니다.</li>
 						<li v-for="item in badgeDatas" :key="item.id">
 							<div class="home_badge_li-div" :style="`background:${item.color}`">
 								<i :class="item.icon"> {{ item.name }}</i>
@@ -84,9 +82,6 @@
 				<p>요청하신 정보를 찾을 수 없습니다.</p>
 			</div>
 		</div>
-
-		<!-- more -->
-		<MoreBtn :limit="limit" :offset="offset" :page="page" :total="total" @getNextPage="getNextPage"></MoreBtn>
 	</div>
 </template>
 
@@ -95,14 +90,11 @@ import { apiGetStoreList } from "@/api/user/store";
 import { apiGetStoreBadgeList } from "@/api/user/badge";
 import { setBadgeStyleTypeList } from "@/utils/common";
 import SearchStore from "@/views/user/home/components/SearchStore";
-import MoreBtn from "@/components/user/MoreBtn";
-import notice from "@/utils/notice";
-import { NOTICE_TITLE } from "@/utils/const";
+import nextV from "@/utils/nextV";
 
 export default {
 	components: {
 		SearchStore,
-		MoreBtn,
 	},
 	data() {
 		return {
@@ -114,10 +106,9 @@ export default {
 			// boolean
 			isSearchArea: false,
 			isBadgeSpin: false,
-			// page
+			// pgination
 			limit: 12,
 			offset: 0,
-			page: 0,
 			total: 0,
 			// search
 			searchItem: {
@@ -128,10 +119,15 @@ export default {
 				areaSiCd: "",
 				areaGuCd: "",
 			},
+			nextV: nextV,
 		};
 	},
 	created() {
 		this.getStoreList();
+		window.addEventListener("scroll", this.handleScroll);
+	},
+	destroyed() {
+		window.removeEventListener("scroll", this.handleScroll);
 	},
 	methods: {
 		async getStoreList() {
@@ -147,7 +143,7 @@ export default {
 				const res = await apiGetStoreList(payload);
 				const resData = res.data.data;
 				this.total = resData.total;
-				this.page <= 0 ? (this.storeDatas = resData.list) : this.storeDatas.push(...resData.list);
+				this.offset <= 0 ? (this.storeDatas = resData.list) : this.storeDatas.push(...resData.list);
 
 				this.$store.commit("offSpinner");
 
@@ -174,18 +170,21 @@ export default {
 				this.$log.info("Get Store Badge List E : ", error);
 			}
 		},
-		getNextPage(payload) {
-			this.page = payload.page;
-			this.offset = payload.offset;
-			this.getStoreList();
+		async handleScroll(event) {
+			const { scrollHeight, scrollTop, clientHeight } = event.target.scrollingElement;
+			if (scrollHeight <= scrollTop + clientHeight + 5 && this.offset + this.limit <= this.total) {
+				this.offset += this.limit;
+				await this.getStoreList();
+			}
 		},
-		async noticeNext() {
-			await notice.alert({
-				title: NOTICE_TITLE.NOTI,
-				text: "조금만 기다려주세요😊<br/>2.0.0버전에서 서비스를 이용할 수 있습니다.",
-			});
+		goDetailStore(item) {
+			let routeData = this.$router.resolve({ name: "store-home", params: { storeId: item.id } });
+			window.open(routeData.href, "_blank");
 		},
 		setSearchItem(payload) {
+			this.storeDatas = [];
+			this.offset = 0;
+
 			this.searchItem = payload;
 			this.getStoreList();
 			this.isSearchArea = false;

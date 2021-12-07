@@ -243,7 +243,10 @@ export default {
 					text: "가입한 이메일로 인증번호가 발송되었습니다.<br/>인증을 통해 회원가입을 완료해주세요.",
 				});
 
-				this.$router.push({ name: "signupAppro", query: { loginId: this.loginId } });
+				this.$router.push({
+					name: "signupAppro",
+					params: { loginId: this.loginId, nickName: this.nickName, email: this.email },
+				});
 				this.init();
 			} catch (error) {
 				await errHandler.common(error);

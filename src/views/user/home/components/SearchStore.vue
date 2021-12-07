@@ -242,8 +242,11 @@ export default {
 			try {
 				this.subSector = "";
 
+				this.$store.commit("onSpinner");
 				const res = await apiGetStoreSubSector({ id: this.sector.id });
 				this.subSectorDatas = res.data.data.list;
+				this.$store.commit("offSpinner");
+
 				this.$log.info("Get Sub Sector Res : ", res);
 			} catch (error) {
 				this.$log.info("Get Sub Sector E : ", error);
@@ -253,6 +256,7 @@ export default {
 			try {
 				const res = await apiGetAreaSi();
 				this.areaSiDatas = res.data.data.list;
+
 				this.$log.info("Get Area(si) Res : ", res);
 			} catch (error) {
 				this.$log.info("Get Area(si) List E : ", error);
@@ -261,8 +265,12 @@ export default {
 		async getAreaGuList() {
 			try {
 				this.areaGu = [];
+
+				this.$store.commit("onSpinner");
 				const res = await apiGetAreaGu({ id: this.areaSi.id });
 				this.areaGuDatas = res.data.data.list;
+				this.$store.commit("offSpinner");
+
 				this.$log.info("Get Area(gu) List Res : ", res);
 			} catch (error) {
 				this.$log.info("Get Area(gu) List E : ", error);
