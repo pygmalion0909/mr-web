@@ -1,12 +1,17 @@
 <template>
 	<div class="home">
-		<!-- search btn -->
-		<div class="home_search">
-			<button class="home_search_btn" @click="isSearchArea = !isSearchArea">
-				가게 검색
-				<i class="fas fa-chevron-circle-down home_search_i" :class="{ 'home_search_i--rotate': isSearchArea }"></i>
-			</button>
-		</div>
+		<!-- header -->
+		<ul class="home_header">
+			<li class="home_header_li home_header_li--report">
+				<ReportSlider></ReportSlider>
+			</li>
+			<li class="home_header_li home_header_li--search">
+				<button class="home_search_btn" @click="isSearchArea = !isSearchArea">
+					<span class="home_search_text">상세검색</span>
+					<i class="fas fa-chevron-circle-down home_search_i" :class="{ 'home_search_i--rotate': isSearchArea }"></i>
+				</button>
+			</li>
+		</ul>
 
 		<!-- search component -->
 		<transition name="home_search_area--tran">
@@ -90,11 +95,14 @@ import { apiGetStoreList } from "@/api/user/store";
 import { apiGetStoreBadgeList } from "@/api/user/badge";
 import { setBadgeStyleTypeList } from "@/utils/common";
 import SearchStore from "@/views/user/home/components/SearchStore";
+import ReportSlider from "@/views/user/home/components/ReportSlider";
 import nextV from "@/utils/nextV";
+import errHandler from "@/utils/errHandler";
 
 export default {
 	components: {
 		SearchStore,
+		ReportSlider,
 	},
 	data() {
 		return {
@@ -124,6 +132,7 @@ export default {
 	},
 	created() {
 		this.getStoreList();
+		this.getReportDisplay();
 		window.addEventListener("scroll", this.handleScroll);
 	},
 	destroyed() {
@@ -149,7 +158,7 @@ export default {
 
 				this.$log.info("Store List Res : ", res);
 			} catch (error) {
-				this.$log.info("Get Store List E :", error);
+				await errHandler.common(error);
 			}
 		},
 		async showBadge(item) {
@@ -167,7 +176,7 @@ export default {
 
 				this.isBadgeSpin = false;
 			} catch (error) {
-				this.$log.info("Get Store Badge List E : ", error);
+				await errHandler.common(error);
 			}
 		},
 		async handleScroll(event) {

@@ -107,10 +107,10 @@ export default {
 					isActive: false,
 				},
 				{
-					linkName: "notice",
+					linkName: "report-list",
 					icon: "far fa-flag header_side_nav_icon",
 					title: "공지사항",
-					isActive: false,
+					isActive: true,
 				},
 				{
 					linkName: "serviceTerms",

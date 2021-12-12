@@ -17,7 +17,7 @@ module.exports = {
 		// 반응형 스크린 사이즈
 		screens: {
 			xs: "350px",
-			sm: "640px",
+			sm: "540px",
 			md: "768px",
 			lg: "1024px",
 			xl: "1280px",

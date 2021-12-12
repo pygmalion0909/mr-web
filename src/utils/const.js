@@ -64,6 +64,16 @@ export const BADGE_INFO = {
 	},
 };
 
+// key값과 badge의 code값(db에 저장된)과 동일해야함
+export const REPORT_INFO = {
+	NEW: {
+		color: "#ffc74a",
+	},
+	EME: {
+		color: "#f87171",
+	},
+};
+
 export const NOTICE_TITLE = {
 	NOTI: "NOTI",
 	DONE: "DONE",

@@ -4,6 +4,7 @@ import user from "@/routes/user";
 import store from "@/routes/store";
 import storage from "@/storage/index";
 import intro from "@/routes/intro";
+import report from "@/routes/report";
 import error from "@/routes/error";
 import notice from "@/utils/notice";
 import { NOTICE_TITLE } from "@/utils/const";
@@ -26,6 +27,7 @@ const router = new VueRouter({
 				...store,
 				...intro,
 				...user,
+				...report,
 			],
 		},
 		// single page

@@ -20,9 +20,7 @@
 					<ul>
 						<li class="footer_nav-title">지원</li>
 						<li>
-							<button class="footer_nav-link" @click="nextV.noticeMr()">
-								공지사항
-							</button>
+							<router-link :to="{ name: 'report-list' }">공지사항</router-link>
 						</li>
 						<li><router-link class="footer_nav-link" :to="{ name: 'serviceTerms' }">이용약관</router-link></li>
 						<li><router-link class="footer_nav-link" :to="{ name: 'personTerms' }">개인정보처리방침</router-link></li>
