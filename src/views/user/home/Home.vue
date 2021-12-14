@@ -132,7 +132,6 @@ export default {
 	},
 	created() {
 		this.getStoreList();
-		this.getReportDisplay();
 		window.addEventListener("scroll", this.handleScroll);
 	},
 	destroyed() {
