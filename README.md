@@ -1,29 +1,5 @@
-# mp3-editor
+# Make Reservation
+Make-Reservation(이하 MR)은 뷰티, 식당/카페, 생활/클래스, 병/의원, 공연/전시 등 실생활에 필요한 모든 예약 서비스를 제공하고 있습니다.
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# 버전관리
+1. master branch 최신버전 및 배포버전
